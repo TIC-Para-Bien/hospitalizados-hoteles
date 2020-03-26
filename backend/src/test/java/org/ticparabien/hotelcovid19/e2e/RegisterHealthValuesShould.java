@@ -37,8 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser("patient")
 public class RegisterHealthValuesShould {
-    //@Autowired
-    //private RegisterHealth registerHealth;
     @Autowired
     private MockMvc mvc;
 
