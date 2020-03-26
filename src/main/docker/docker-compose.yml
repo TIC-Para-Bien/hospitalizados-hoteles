@@ -1,0 +1,8 @@
+version: '2'
+services:
+  reports_db:
+    build: postgres/
+    container_name: hotelcovid19_postgres
+    ports:
+      - "5432:5432"
+    restart: always
