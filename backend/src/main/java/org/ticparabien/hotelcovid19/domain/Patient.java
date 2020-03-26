@@ -1,20 +1,15 @@
 package org.ticparabien.hotelcovid19.domain;
 
 public class Patient {
+    public Integer id;
+    public String personalId;
+    public String phone;
+    public String name;
 
-    private final String roomNumber;
-    private final String phoneNumber;
-
-    public Patient(String roomNumber, String phoneNumber) {
-        this.roomNumber = roomNumber;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public Patient(Integer id, String personalId, String phone, String name) {
+        this.id = id;
+        this.personalId = personalId;
+        this.phone = phone;
+        this.name = name;
     }
 }

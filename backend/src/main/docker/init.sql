@@ -10,10 +10,10 @@ CREATE TABLE Rooms
 DROP TABLE IF EXISTS patient;
 CREATE TABLE patient
 (
-    ID           SERIAL PRIMARY KEY NOT NULL,
-    USERNAME     VARCHAR(200)       NOT NULL,
-    PASSWORDHASH VARCHAR(200)       NOT NULL,
-    EXTRADATA    TEXT               NULL
+    ID              SERIAL PRIMARY KEY NOT NULL,
+    PERSONAL_ID     VARCHAR(50)       NOT NULL,
+    NAME            VARCHAR(50)       NOT NULL,
+    PHONE           VARCHAR(50)       NOT NULL
 );
 
 DROP TABLE IF EXISTS Rooms_owners;
@@ -24,12 +24,21 @@ CREATE TABLE Rooms_owners
     OWNER INTEGER
 );
 
+DROP TABLE IF EXISTS supervisor;
+CREATE TABLE supervisor
+(
+    ID            SERIAL PRIMARY KEY NOT NULL,
+    USERNAME      VARCHAR(200)       NOT NULL,
+    PASSWORD_HASH VARCHAR(200)       NOT NULL,
+    EXTRA_DATA    TEXT               NULL
+);
+
 INSERT INTO Rooms(name)
 VALUES ('Baberia Paco'),
        ('Tim Barbers'),
        ('Superbarbers');
 
-INSERT INTO patient(username, passwordhash)
+INSERT INTO supervisor(username, password_hash)
 VALUES ('hotelcovid19@ticparabien.org', '$2a$12$5KiR0C/FopFFHk3m39xf6eQyiiBbHUSrYVnhbsFXX87Sg6zUGXue2');
 
 INSERT INTO Rooms_owners(Room, owner)
