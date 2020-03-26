@@ -5,14 +5,6 @@ Con este software pueden reportar su estado de salud periodicamente
 
 ### Setup ###
 
-- Configure Selenium:
-
- Download latest version of ChromeDriver for your operating system
-
-    https://chromedriver.storage.googleapis.com/index.html
-
-Then copy the binary to `./src/test/chromedriver`
-
 - Configure the database:
 
   - move to `./src/main/docker`
@@ -43,7 +35,7 @@ You should be able to login with "hotelcovid19@ticparabien.org" and password "12
     http://localhost:8080/api/Rooms
 
 
-  ### Troubleshooting
+### Troubleshooting
 
   - Sometimes, there are zombie containers, run to remove them:
 
@@ -62,5 +54,5 @@ Passwords are hashed with BCrypt. An online tool for this could be this one:
 
 #### Requirements ####
 - Maven 3.5.0
-- Java 8
+- Java 13
 - Docker
