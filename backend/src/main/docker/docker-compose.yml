@@ -23,3 +23,12 @@ services:
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+
+  hotel_covid_backend:
+    build: ../../../
+    ports:
+    - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - hotel_covid_database
+      - hotel_covid_database_test
