@@ -44,12 +44,25 @@ public class RegisterHealthValuesShould {
 
     @Test
     public void registering_high_fever_should_inform_doctors() throws Exception {
-        HealthRegisterDto register = new HealthRegisterDto();
-        Patient patient = add_patient();
-        register.patientId = patient.id.toString();
-        register.fever = BigDecimal.valueOf(39);
+        HealthRegisterDto registerForPatientWithFever = new HealthRegisterDto();
+        Patient patientWithFever = add_patient();
+        registerForPatientWithFever.patientId = patientWithFever.id;
+        registerForPatientWithFever.fever = BigDecimal.valueOf(39);
         ObjectMapper mapper = new ObjectMapper();
-        String sentJson = mapper.writeValueAsString(register);
+        String sentJson = mapper.writeValueAsString(registerForPatientWithFever);
+
+        mvc.perform(post(Routes.PatientHealthRecord)
+                .content(sentJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        HealthRegisterDto registerForPatientWithNoFever = new HealthRegisterDto();
+        Patient patientWithNoFever = add_patient();
+        registerForPatientWithNoFever.patientId = patientWithNoFever.id;
+        registerForPatientWithNoFever.fever = BigDecimal.valueOf(36);
+        sentJson = mapper.writeValueAsString(registerForPatientWithNoFever);
 
         mvc.perform(post(Routes.PatientHealthRecord)
                 .content(sentJson)
@@ -66,7 +79,8 @@ public class RegisterHealthValuesShould {
 
         String resultContentAsString = result.getResponse().getContentAsString();
 
-        assertThat(resultContentAsString).contains("\"id\":" + patient.id);
+        assertThat(resultContentAsString).contains("\"id\":" + patientWithFever.id);
+        assertThat(resultContentAsString).doesNotContain("\"id\":" + patientWithNoFever.id);
     }
 
     public Patient add_patient() {

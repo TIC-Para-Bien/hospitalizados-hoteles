@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PatientRepository {
     List<Patient> findAll();
+    List<Patient> findAllWithFever();
 }

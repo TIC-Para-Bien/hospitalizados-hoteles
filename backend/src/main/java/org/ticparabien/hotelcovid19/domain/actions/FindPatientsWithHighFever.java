@@ -19,6 +19,6 @@ public class FindPatientsWithHighFever {
     }
 
     public List<Patient> execute() {
-        return patientRepository.findAll();
+        return patientRepository.findAllWithFever();
     }
 }
