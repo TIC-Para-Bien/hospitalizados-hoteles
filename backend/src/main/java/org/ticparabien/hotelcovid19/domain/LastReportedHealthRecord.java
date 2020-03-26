@@ -1,13 +1,13 @@
 package org.ticparabien.hotelcovid19.domain;
 
 public class LastReportedHealthRecord {
-    private float fever;
+    private float temperature;
 
-    public LastReportedHealthRecord(float fever) {
-        this.fever = fever;
+    public LastReportedHealthRecord(float temperature) {
+        this.temperature = temperature;
     }
 
-    public float getFever() {
-        return fever;
+    public float getTemperature() {
+        return temperature;
     }
 }

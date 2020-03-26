@@ -35,7 +35,7 @@ public class PostgresPatientRepository implements PatientRepository {
                     resultSet.getString("name")
             );
 
-            patient.setLastReportedHealthRecord(new LastReportedHealthRecord(resultSet.getFloat("fever")));
+            patient.setLastReportedHealthRecord(new LastReportedHealthRecord(resultSet.getFloat("temperature")));
             return patient;
         };
     }

@@ -15,7 +15,7 @@ public class Patient {
     }
 
     public float temperature() {
-        return lastReportedHealthRecord.getFever();
+        return lastReportedHealthRecord.getTemperature();
     }
 
     public Integer getId() {

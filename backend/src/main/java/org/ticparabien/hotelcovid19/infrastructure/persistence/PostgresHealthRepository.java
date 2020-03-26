@@ -13,7 +13,7 @@ public class PostgresHealthRepository implements HealthRepository {
 
     @Override
     public void create(HealthRegisterDto dto) {
-        jdbcTemplate.update("INSERT INTO health_records (patient_id, fever, cough, headache, throat_ache) VALUES(?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO health_records (patient_id, temperature, cough, headache, throat_ache) VALUES(?,?,?,?,?)",
                 dto.patientId, dto.fever, dto.cough, dto.headache, dto.throatAche);
     }
 }
