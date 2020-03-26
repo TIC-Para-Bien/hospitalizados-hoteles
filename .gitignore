@@ -26,8 +26,4 @@ hs_err_pid*
 
 .idea/
 idea-settings-sample/
-src/main/frontend/node_modules/
-src/main/java/org/
-src/main/resources/static/
-src/test/java/org/
 target/
