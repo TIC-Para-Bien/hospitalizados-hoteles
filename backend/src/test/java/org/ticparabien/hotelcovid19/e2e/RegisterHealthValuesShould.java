@@ -1,5 +1,6 @@
 package org.ticparabien.hotelcovid19.e2e;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
@@ -51,15 +52,11 @@ public class RegisterHealthValuesShould {
         deleteAllHealthRecords();
     }
 
-
     @Test
     public void registering_high_fever_should_inform_doctors() throws Exception {
         Patient patientWithFever = addPatient();
-        HealthRegisterDto registerForPatientWithFever = new HealthRegisterDto();
-        registerForPatientWithFever.patientId = patientWithFever.id;
-        registerForPatientWithFever.fever = BigDecimal.valueOf(39);
-        ObjectMapper mapper = new ObjectMapper();
-        String sentJson = mapper.writeValueAsString(registerForPatientWithFever);
+        BigDecimal fever = BigDecimal.valueOf(39);
+        String sentJson = healthRecordJson(patientWithFever, fever);
 
         mvc.perform(post(Routes.PatientHealthRecord)
                 .content(sentJson)
@@ -69,10 +66,8 @@ public class RegisterHealthValuesShould {
                 .andReturn();
 
         Patient patientWithNoFever = addPatient();
-        HealthRegisterDto registerForPatientWithNoFever = new HealthRegisterDto();
-        registerForPatientWithNoFever.patientId = patientWithNoFever.id;
-        registerForPatientWithNoFever.fever = BigDecimal.valueOf(36);
-        sentJson = mapper.writeValueAsString(registerForPatientWithNoFever);
+        fever = BigDecimal.valueOf(36);
+        sentJson = healthRecordJson(patientWithNoFever, fever);
 
         mvc.perform(post(Routes.PatientHealthRecord)
                 .content(sentJson)
@@ -89,8 +84,15 @@ public class RegisterHealthValuesShould {
 
         String resultContentAsString = result.getResponse().getContentAsString();
 
-        assertThat(resultContentAsString).contains("\"id\":" + patientWithFever.id);
-        assertThat(resultContentAsString).doesNotContain("\"id\":" + patientWithNoFever.id);
+        assertThat(resultContentAsString).contains("\"id\":" + patientWithFever.getId());
+        assertThat(resultContentAsString).doesNotContain("\"id\":" + patientWithNoFever.getId());
+    }
+
+    private String healthRecordJson(Patient patientWithFever, BigDecimal fever) throws JsonProcessingException {
+        HealthRegisterDto registerForPatientWithFever = new HealthRegisterDto();
+        registerForPatientWithFever.patientId = patientWithFever.getId();
+        registerForPatientWithFever.fever = fever;
+        return new ObjectMapper().writeValueAsString(registerForPatientWithFever);
     }
 
     public Patient addPatient() {
