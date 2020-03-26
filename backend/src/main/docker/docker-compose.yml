@@ -11,6 +11,9 @@ services:
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal
 
   hotel_covid_database_test:
     image: postgres
@@ -23,6 +26,8 @@ services:
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+    networks:
+      - internal
 
   hotel_covid_backend:
     build: ../../../
@@ -32,3 +37,11 @@ services:
     depends_on:
       - hotel_covid_database
       - hotel_covid_database_test
+    networks:
+      - internal
+
+volumes:
+  postgres-data:
+
+networks:
+  internal:
