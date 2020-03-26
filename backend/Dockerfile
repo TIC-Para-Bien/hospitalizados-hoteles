@@ -13,7 +13,7 @@ COPY . .
 RUN mvn package -Dmaven.test.skip=true
 
 #FROM openjdk:8-jre-alpine
-FROM openjdk:12
+FROM openjdk:13
 
 EXPOSE 8080
 
