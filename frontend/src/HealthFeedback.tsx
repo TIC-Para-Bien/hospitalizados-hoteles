@@ -3,6 +3,7 @@ import React from 'react';
 const HealthFeedback: React.FC = () => {
   return (
     <div className="HealthFeedback">
+       Nota: Este formulario solo sera accesible por los pacientes, una vez que han hecho login.
         <h1>Recogida de datos de paciente</h1>
         <h2>¿Cómo se encuentra?</h2>
         <form>
