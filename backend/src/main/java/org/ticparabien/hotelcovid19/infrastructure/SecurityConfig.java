@@ -1,8 +1,5 @@
 package org.ticparabien.hotelcovid19.infrastructure;
 
-import org.ticparabien.hotelcovid19.domain.RoomService;
-import org.ticparabien.hotelcovid19.controller.Routes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.ticparabien.hotelcovid19.controller.Routes;
 
 
 @EnableWebSecurity
@@ -36,16 +34,9 @@ public class SecurityConfig {
     @Configuration
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private RoomService RoomService;
-
-        @Autowired
-        public WebSecurityConfig(RoomService RoomService) {
-            this.RoomService = RoomService;
-        }
-
         @Override
         protected AuthenticationManager authenticationManager() throws Exception {
-            return new CustomAuthenticationProvider(RoomService);
+            return new CustomAuthenticationProvider();
         }
 
         @Override
