@@ -1,15 +1,9 @@
 package org.ticparabien.hotelcovid19.integration;
 
-import org.ticparabien.hotelcovid19.Configuration;
 import org.ticparabien.hotelcovid19.helpers.IntegrationTests;
-import org.ticparabien.hotelcovid19.domain.Credentials;
-import org.ticparabien.hotelcovid19.domain.RoomDTO;
-import org.ticparabien.hotelcovid19.domain.RoomService;
-import org.ticparabien.hotelcovid19.helpers.TestFactory;
 import org.junit.Test;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

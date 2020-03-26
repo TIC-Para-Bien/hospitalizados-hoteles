@@ -1,8 +1,25 @@
 version: '2'
 services:
-  reports_db:
-    build: postgres
-    container_name: hotelcovid19_postgres
+  hotel_covid_database:
+    image: postgres
     ports:
       - "5432:5432"
-    restart: always
+    restart: on-failure
+    environment:
+      POSTGRES_DB: hotelcovid19
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+
+  hotel_covid_database_test:
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: hotelcovid19
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql

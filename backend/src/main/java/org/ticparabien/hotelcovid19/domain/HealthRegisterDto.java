@@ -1,4 +1,4 @@
-package org.ticparabien.hotelcovid19.e2e;
+package org.ticparabien.hotelcovid19.domain;
 
 import java.math.BigDecimal;
 
