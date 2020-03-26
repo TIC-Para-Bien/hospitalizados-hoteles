@@ -65,17 +65,6 @@ public class RegisterHealthValuesShould {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        Patient patientWithNoFever = addPatient();
-        fever = BigDecimal.valueOf(36);
-        sentJson = healthRecordJson(patientWithNoFever, fever);
-
-        mvc.perform(post(Routes.PatientHealthRecord)
-                .content(sentJson)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
-
         MvcResult result = mvc.perform(get(Routes.HighFeverPatients)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -84,8 +73,8 @@ public class RegisterHealthValuesShould {
 
         String resultContentAsString = result.getResponse().getContentAsString();
 
-        assertThat(resultContentAsString).contains("\"id\":" + patientWithFever.getId());
-        assertThat(resultContentAsString).doesNotContain("\"id\":" + patientWithNoFever.getId());
+        assertThat(resultContentAsString).contains("\"patientId\":" + patientWithFever.getId());
+        assertThat(resultContentAsString).contains("\"temperature\":" + fever);
     }
 
     private String healthRecordJson(Patient patientWithFever, BigDecimal fever) throws JsonProcessingException {

@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.ticparabien.hotelcovid19.controller.Routes;
+import org.ticparabien.hotelcovid19.domain.HighFeverDto;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PatientApiController {
@@ -19,7 +21,9 @@ public class PatientApiController {
 
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
-    public List<Patient> getHighFeverPatients() {
-        return findPatientsWithHighFever.execute();
+    public List<HighFeverDto> getHighFeverPatients() {
+        return findPatientsWithHighFever.execute().stream()
+                .map(patient -> new HighFeverDto(patient.getId(), patient.temperature()))
+                .collect(Collectors.toList());
     }
 }
