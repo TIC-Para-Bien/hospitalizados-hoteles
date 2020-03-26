@@ -5,8 +5,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
 import java.sql.SQLException;
 
@@ -14,7 +12,9 @@ public class IntegrationTests {
 
     @BeforeClass
     public static void createDatabase() throws SQLException {
+        /*
         try {
+
             System.out.println("======================== Creating database =============");
             Sql2o sql2o = new Sql2o(Configuration.connectionBaseUrl, Configuration.dbUser, Configuration.dbPassword);
             Connection connection = sql2o.open();
@@ -31,10 +31,12 @@ public class IntegrationTests {
         catch(Exception ex){
             System.err.println("************************* Error creating database:" + ex.getMessage());
         }
+         */
     }
 
     @AfterClass
     public static void dropDatabase() throws SQLException {
+        /*
         try {
             System.out.println("======================= Dropping database ==============");
             Sql2o sql2o = new Sql2o(Configuration.connectionBaseUrl, Configuration.dbUser, Configuration.dbPassword);
@@ -47,6 +49,7 @@ public class IntegrationTests {
         catch(Exception ex){
             System.err.println("************************* Error dropping database:" + ex.getMessage());
         }
+         */
     }
 
     @Before
@@ -60,6 +63,7 @@ public class IntegrationTests {
     }
 
     private void flushDatabase() throws SQLException {
+        /*
         System.out.println("------------------------- Flushing database");
         Sql2o sql2o = new Sql2o(Configuration.connectionBaseUrl + Configuration.testDb, Configuration.dbUser, Configuration.dbPassword);
         Connection connection = sql2o.open();
@@ -75,5 +79,6 @@ public class IntegrationTests {
                 .executeUpdate();
         connection.commit();
         System.out.println("------------------------- Flushing success");
+         */
     }
 }
