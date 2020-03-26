@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
 
 import java.math.BigDecimal;
@@ -39,14 +40,14 @@ public class RegisterHealthValuesShould {
         ObjectMapper mapper = new ObjectMapper();
         String sentJson = mapper.writeValueAsString(register);
 
-        mvc.perform(post("/register-health")
+        mvc.perform(post(Routes.PatientHealthRecord)
                         .content(sentJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        MvcResult result = mvc.perform(get("/high-fever-patients")
+        MvcResult result = mvc.perform(get(Routes.HighFeverPatients)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

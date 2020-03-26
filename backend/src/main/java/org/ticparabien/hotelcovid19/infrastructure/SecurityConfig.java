@@ -28,7 +28,8 @@ public class SecurityConfig {
                     .authenticationEntryPoint(authenticationEntryPoint)
                     .and()
                     .authorizeRequests()
-                    .anyRequest().hasRole("USER");
+                    .anyRequest().hasRole("USER")
+                    .and().csrf().disable();
         }
     }
 
