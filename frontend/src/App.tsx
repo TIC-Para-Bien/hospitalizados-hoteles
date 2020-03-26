@@ -29,6 +29,8 @@ const App: React.FC = () => {
 
                 <hr />
 
+                <h3>TODO: Hacer portada con dos opciones nada mas, acceso pacientes o acceso sanitarios </h3>
+
                 <Switch>
                     <Route exact path="/patients-login">
                         <PatientLogin />
