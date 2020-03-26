@@ -1,6 +1,5 @@
 package org.ticparabien.hotelcovid19.helpers;
 
-import org.ticparabien.hotelcovid19.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
