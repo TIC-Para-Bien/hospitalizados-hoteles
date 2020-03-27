@@ -10,7 +10,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
       - postgres-data:/var/lib/postgresql/data
     networks:
       - internal
@@ -24,8 +23,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB_TEST}
       POSTGRES_USER: ${POSTGRES_USER_TEST}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_TEST}
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
     networks:
       - internal
 

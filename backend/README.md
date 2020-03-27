@@ -10,3 +10,12 @@ For deploying in production the service "hotel_covid_database_test" is irrelevan
 we are not launching the test suites on building the app.
 
 Take care about database volumes!
+
+
+### STACK
+
+#### DB version control
+- Flyway
+
+#### DB test
+- H2 (in memory DB)
