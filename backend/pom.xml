@@ -12,9 +12,12 @@
     <properties>
         <flyway.version>5.2.4</flyway.version>
         <h2.version>1.4.200</h2.version>
+        <hibernate.version>5.4.12.Final</hibernate.version>
         <jackson.version>2.10.3</jackson.version>
         <jacoco.version>0.8.5</jacoco.version>
         <java.version>1.8</java.version>
+        <lombok.version>1.18.10</lombok.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.failsafe.version>2.22.2</maven.failsafe.version>
         <maven.project.info.reports.version>3.0.0</maven.project.info.reports.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,6 +28,7 @@
         <sonar.jacoco.reportPath>${project.build.directory}/coverage-reports/merged.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
         <sonar.version>3.7.0.1746</sonar.version>
+        <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
     </properties>
 
     <parent>
@@ -37,8 +41,18 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>2.1.6.RELEASE</version>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
 
         <dependency>
@@ -49,10 +63,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.simpleframework</groupId>
@@ -74,11 +96,6 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.3m</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
 
         <!-- Test Dependencies -->
         <dependency>
@@ -89,6 +106,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -189,6 +207,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>

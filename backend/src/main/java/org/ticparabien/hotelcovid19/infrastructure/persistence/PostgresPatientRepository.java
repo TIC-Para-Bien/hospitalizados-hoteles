@@ -11,7 +11,7 @@ import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 import java.util.List;
 
 @Repository
-public class PostgresPatientRepository implements PatientRepository {
+public class PostgresPatientRepository{
 
     final
     JdbcTemplate jdbcTemplate;
@@ -21,7 +21,6 @@ public class PostgresPatientRepository implements PatientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
     public List<Patient> findAll() {
         return jdbcTemplate.query("SELECT * FROM patient INNER JOIN health_records hr on patient.id = hr.patient_id;", patientRowMapper());
     }
