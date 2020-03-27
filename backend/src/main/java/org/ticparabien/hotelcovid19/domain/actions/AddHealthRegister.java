@@ -1,22 +1,21 @@
 package org.ticparabien.hotelcovid19.domain.actions;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
-import org.ticparabien.hotelcovid19.domain.repositories.HealthRepository;
+import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
+import org.ticparabien.hotelcovid19.domain.repositories.HealthRecordRepository;
 
 @Service
-@Component
 public class AddHealthRegister {
-    private final HealthRepository healthRepository;
 
-    public AddHealthRegister(HealthRepository healthRepository) {
-        this.healthRepository = healthRepository;
+    @Autowired
+    private HealthRecordRepository healthRecordRepository;
+
+    public AddHealthRegister(HealthRecordRepository healthRecordRepository) {
+        this.healthRecordRepository = healthRecordRepository;
     }
 
-    public void execute(HealthRegisterDto dto) {
-        healthRepository.create(dto);
+    public void execute(LastReportedHealthRecord dto) {
+        healthRecordRepository.save(dto);
     }
 }

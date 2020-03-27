@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.HighFeverDto;
-import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
 
 import java.util.List;

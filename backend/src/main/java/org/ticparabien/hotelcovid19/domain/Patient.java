@@ -22,7 +22,7 @@ public class Patient {
     private String phone;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @OneToOne(optional = true, mappedBy = "patient")
+    @OneToOne(mappedBy = "patient")
     private LastReportedHealthRecord lastReportedHealthRecord;
 
     public Patient(Integer id, String personalId, String phone, String name) {
