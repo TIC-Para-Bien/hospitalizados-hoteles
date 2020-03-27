@@ -37,3 +37,16 @@ CREATE TABLE health_records
     HEADACHE   BOOLEAN DEFAULT FALSE NULL,
     THROAT_ACHE BOOLEAN DEFAULT FALSE NULL
 );
+
+INSERT INTO Rooms(name)
+VALUES ('Baberia Paco'),
+       ('Tim Barbers'),
+       ('Superbarbers');
+
+INSERT INTO supervisor(username, password_hash)
+VALUES ('hotelcovid19@ticparabien.org', '$2a$12$5KiR0C/FopFFHk3m39xf6eQyiiBbHUSrYVnhbsFXX87Sg6zUGXue2');
+
+INSERT INTO Rooms_owners(Room, owner)
+VALUES (1, 1),
+       (2, 1),
+       (3, 1);
