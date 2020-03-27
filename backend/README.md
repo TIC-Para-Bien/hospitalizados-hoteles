@@ -13,6 +13,7 @@ Take care about database volumes!
 
 
 ### STACK
+- Lombok
 
 #### DB version control
 - Flyway

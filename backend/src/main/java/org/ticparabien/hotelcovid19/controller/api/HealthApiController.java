@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
+import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
 
 @RestController
@@ -17,7 +18,7 @@ public class HealthApiController {
 
     @PostMapping(Routes.PatientHealthRecord)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addHealthRegister(@RequestBody HealthRegisterDto dto){
+    public void addHealthRegister(@RequestBody LastReportedHealthRecord dto){
         addHealthRegister.execute(dto);
     }
 }
