@@ -170,13 +170,15 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven.failsafe.version}</version>
                 <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.basedir}/target/classes</additionalClasspathElement>
+                    </additionalClasspathElements>
                     <argLine>${failsafeArgLine}</argLine>
                     <includes>
                         <include>${test.include.pattern}</include>
                     </includes>
                     <excludes>
                         <exclude>${test.exclude.pattern}</exclude>
-                        <exclude>**/*Test.java</exclude>
                     </excludes>
                 </configuration>
                 <executions>
