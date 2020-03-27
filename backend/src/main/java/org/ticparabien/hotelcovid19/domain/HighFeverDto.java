@@ -1,11 +1,12 @@
 package org.ticparabien.hotelcovid19.domain;
 
-public class HighFeverDto {
-    public Integer patientId;
-    public float temperature;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    public HighFeverDto(Integer patientId, float temperature) {
-        this.patientId = patientId;
-        this.temperature = temperature;
-    }
+@Data
+@AllArgsConstructor
+public class HighFeverDto {
+    private final Integer patientId;
+    private final float temperature;
+
 }
