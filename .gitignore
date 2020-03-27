@@ -55,3 +55,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/sonarlint
+
+# Platform
+backend/.env
