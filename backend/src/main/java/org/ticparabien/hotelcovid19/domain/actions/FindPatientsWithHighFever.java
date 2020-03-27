@@ -7,6 +7,7 @@ import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -19,6 +20,7 @@ public class FindPatientsWithHighFever {
     }
 
     public List<Patient> execute() {
-        return patientRepository.findAll();
+        List<Patient> allPatients = patientRepository.findAll();
+        return allPatients.stream().filter(patient -> patient.temperature() >= 37.7).collect(Collectors.toList());
     }
 }
