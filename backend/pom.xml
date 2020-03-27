@@ -10,6 +10,8 @@
     <packaging>jar</packaging>
 
     <properties>
+        <flyway.version>5.2.4</flyway.version>
+        <h2.version>1.4.199</h2.version>
         <jackson.version>2.10.3</jackson.version>
         <jacoco.version>0.8.5</jacoco.version>
         <java.version>1.8</java.version>
@@ -63,6 +65,11 @@
             <version>9.4-1201-jdbc4</version>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.3m</version>
@@ -82,6 +89,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
