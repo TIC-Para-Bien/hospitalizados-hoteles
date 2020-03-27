@@ -6,9 +6,9 @@ services:
       - "5432:5432"
     restart: on-failure
     environment:
-      POSTGRES_DB: hotelcovid19
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
       - postgres-data:/var/lib/postgresql/data
@@ -21,23 +21,31 @@ services:
       - "5433:5432"
     restart: on-failure
     environment:
-      POSTGRES_DB: hotelcovid19
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: ${POSTGRES_DB_TEST}
+      POSTGRES_USER: ${POSTGRES_USER_TEST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_TEST}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
     networks:
       - internal
-#
-#  hotel_covid_backend:
-#    build: ../../../
-#    ports:
-#    - "8080:8080"
-#    restart: on-failure
-#    depends_on:
-#      - hotel_covid_database
-#    networks:
-#      - internal
+
+  hotel_covid_backend:
+    build: ../../../
+    ports:
+    - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - hotel_covid_database
+      - hotel_covid_database_test
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_TEST: ${POSTGRES_DB_TEST}
+      POSTGRES_USER_TEST: ${POSTGRES_USER_TEST}
+      POSTGRES_PASSWORD_TEST: ${POSTGRES_PASSWORD_TEST}
+    networks:
+      - internal
 
 volumes:
   postgres-data:
