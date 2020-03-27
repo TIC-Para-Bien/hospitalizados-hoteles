@@ -41,11 +41,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.hotel_covid_backend.entrypoints=web"
-      - "traefik.http.routers.hotel_covid_backend.rule=Host(`www.domain.com`)"
+      - "traefik.http.routers.hotel_covid_backend.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.middlewares.hotel_covid_backend-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.hotel_covid_backend.middlewares=hotel_covid_backend-https-redirect"
       - "traefik.http.routers.hotel_covid_backend-secure.entrypoints=websecure"
-      - "traefik.http.routers.hotel_covid_backend-secure.rule=Host(`www.domain.com`)"
+      - "traefik.http.routers.hotel_covid_backend-secure.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.routers.hotel_covid_backend-secure.tls=true"
       - "traefik.http.routers.hotel_covid_backend-secure.tls.certresolver=mytlschallenge"
       - "traefik.http.routers.hotel_covid_backend-secure.service=hotel_covid_backend"
@@ -58,13 +58,13 @@ services:
     image: traefik:latest
     restart: on-failure
     networks:
-      - proxy
+      - internal
     command:
       - "--providers.docker"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
-      - "--certificatesresolvers.mytlschallenge.acme.email=email@for.notifications.com"
+      - "--certificatesresolvers.mytlschallenge.acme.email=${LETSENCRYPT_NOTIFICATION_EMAIL}"
       - "--certificatesresolvers.mytlschallenge.acme.storage=/acme/acme.json"
     ports:
       - "80:80"
@@ -79,5 +79,3 @@ volumes:
 
 networks:
   internal:
-  proxy:
-    external: true
