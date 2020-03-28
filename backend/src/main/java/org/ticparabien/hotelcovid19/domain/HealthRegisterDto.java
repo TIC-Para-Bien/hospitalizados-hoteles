@@ -1,11 +1,23 @@
 package org.ticparabien.hotelcovid19.domain;
 
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HealthRegisterDto {
-    public Integer patientId;
-    public BigDecimal fever;
-    public Boolean cough;
-    public Boolean headache;
-    public Boolean throatAche;
+
+    private String patientId;
+
+    private Float temperature;
+
+    private Boolean cough;
+
+    private Boolean headache;
+
+    private Boolean throatAche;
 }
