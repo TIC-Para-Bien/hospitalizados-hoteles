@@ -1,12 +1,11 @@
 package org.ticparabien.hotelcovid19.unit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,10 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FindPatientsWithHighFeverTest {
+class FindPatientsWithHighFeverTest {
 
     @Test
-    public void filter_patients_with_high_temperature() {
+    void filter_patients_with_high_temperature() {
         PatientRepository repository = mock(PatientRepository.class);
         List<Patient> patients = Arrays.asList(createPatientWithFever(), createPatientWithoutFever());
         given(repository.findAll()).willReturn(patients);

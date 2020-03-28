@@ -1,10 +1,8 @@
 package org.ticparabien.hotelcovid19.integration;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
@@ -14,8 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DataJpaTest
-@RunWith(SpringRunner.class)
-public class PatientRepositoryIT {
+class PatientRepositoryIT {
 
     private static final String NAME = "name";
 
@@ -27,7 +24,7 @@ public class PatientRepositoryIT {
     private PatientRepository repository;
 
     @Test
-    public void given_AnExistingPersonalId_When_RetrievingPatientByPersonalId_Then_GetEntity() {
+    void given_AnExistingPersonalId_When_RetrievingPatientByPersonalId_Then_GetEntity() {
         Patient patient = Patient.builder()
                 .name(NAME)
                 .personalId(PERSONAL_ID)
@@ -44,7 +41,7 @@ public class PatientRepositoryIT {
     }
 
     @Test
-    public void given_ANonExistingPersonalId_When_RetrievingPatientByPersonalId_Then_GetEmpty() {
+    void given_ANonExistingPersonalId_When_RetrievingPatientByPersonalId_Then_GetEmpty() {
         Optional<Patient> optional = repository.findByPersonalId(PERSONAL_ID);
 
         assertThat(optional.isPresent(), is(false));
