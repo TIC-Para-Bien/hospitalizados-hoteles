@@ -1,4 +1,4 @@
-package org.ticparabien.hotelcovid19.integration;
+package org.ticparabien.hotelcovid19.unit;
 
 import org.junit.Test;
 import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
@@ -7,33 +7,39 @@ import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class FindPatientsShould {
+public class FindPatientsWithHighFeverTest {
 
     @Test
     public void filter_patients_with_high_temperature() {
-
         PatientRepository repository = mock(PatientRepository.class);
-        List<Patient> patients = new ArrayList<>();
-        Patient patientWithHighTemperature = new Patient(1, "personalid", "123123123", "nombre");
-        patientWithHighTemperature.setLastReportedHealthRecord(new LastReportedHealthRecord(38));
-        patients.add(patientWithHighTemperature);
-
-        Patient patientWithNormalTemperature = new Patient(2, "personalid", "123123123", "nombre");
-        patientWithNormalTemperature.setLastReportedHealthRecord(new LastReportedHealthRecord(36));
-        patients.add(patientWithNormalTemperature);
-
+        List<Patient> patients = Arrays.asList(createPatientWithFever(), createPatientWithoutFever());
         given(repository.findAll()).willReturn(patients);
 
         FindPatientsWithHighFever service = new FindPatientsWithHighFever(repository);
-
         List<Patient> patientsWithHighTemperature = service.execute();
+
         assertThat(patientsWithHighTemperature.size()).isEqualTo(1);
         assertThat(patientsWithHighTemperature.get(0).temperature()).isEqualTo(38);
+    }
+
+    private Patient createPatientWithFever() {
+        LastReportedHealthRecord healthRecord = LastReportedHealthRecord.builder().temperature(38f).build();
+        Patient patientWithHighTemperature = new Patient(1, "personalid", "123123123", "nombre");
+        patientWithHighTemperature.setLastReportedHealthRecord(healthRecord);
+        return patientWithHighTemperature;
+    }
+
+    private Patient createPatientWithoutFever() {
+        LastReportedHealthRecord healthRecord = LastReportedHealthRecord.builder().temperature(36.5f).build();
+        Patient patientWithoutHighTemperature = new Patient(2, "personalid", "123123123", "nombre");
+        patientWithoutHighTemperature.setLastReportedHealthRecord(healthRecord);
+        return patientWithoutHighTemperature;
     }
 }
