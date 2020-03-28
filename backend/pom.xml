@@ -10,7 +10,9 @@
     <packaging>jar</packaging>
 
     <properties>
+        <assertj.version>3.6.2</assertj.version>
         <flyway.version>5.2.4</flyway.version>
+        <guava.version>22.0</guava.version>
         <h2.version>1.4.200</h2.version>
         <hibernate.version>5.4.12.Final</hibernate.version>
         <jackson.version>2.10.3</jackson.version>
@@ -20,9 +22,13 @@
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.failsafe.version>2.22.2</maven.failsafe.version>
         <maven.project.info.reports.version>3.0.0</maven.project.info.reports.version>
+        <postqresql.version>9.4-1201-jdbc4</postqresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.site.version>3.8.2</maven.site.version>
         <maven.surfire.version>2.22.2</maven.surfire.version>
+        <selenium.version>3.141.59</selenium.version>
+        <selenium.htmlunit.version>2.38.0</selenium.htmlunit.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.build.directory}/coverage-reports/merged.exec</sonar.jacoco.reportPath>
@@ -34,7 +40,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.1.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -54,11 +60,10 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.3</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -84,7 +89,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4-1201-jdbc4</version>
+            <version>${postqresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -116,50 +121,44 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-server</artifactId>
-            <version>3.141.59</version>
+            <version>${selenium.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Use new artifact compatible with Selenium 3 -> https://stackoverflow.com/questions/47006261/htmlunitdriver-not-working-correct-maven-dependencies-->
         <dependency>
-            <!-- required by firefox driver apparently -->
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
-            <version>2.52.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-support</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>htmlunit-driver</artifactId>
+            <version>${selenium.htmlunit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-firefox-driver</artifactId>
-            <!-- if version is provided, I can't make it work -->
+            <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-chrome-driver</artifactId>
-            <!-- if version is provided, I can't make it work -->
+            <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- required by chrome driver apparently -->
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>22.0</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.6.2</version>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -169,7 +168,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
+                <version>${maven.surfire.version}</version>
                 <configuration>
                     <includes>
                         <include>**/**Test.java</include>
@@ -177,6 +176,7 @@
                     </includes>
                     <excludes>
                         <exclude>**/integration/*.java</exclude>
+                        <exclude>**/e2e/*.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
