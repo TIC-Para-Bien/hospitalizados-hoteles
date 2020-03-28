@@ -1,14 +1,13 @@
 package org.ticparabien.hotelcovid19.integration;
 
-import org.ticparabien.hotelcovid19.helpers.IntegrationTests;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+public class RoomServiceShould {
 
-public class RoomServiceShould extends IntegrationTests {
-
+    @Ignore
     @Test
     public void create_an_organization_with_one_owner_allowed() throws SQLException {
         /*
@@ -23,6 +22,7 @@ public class RoomServiceShould extends IntegrationTests {
          */
     }
 
+    @Ignore
     @Test
     public void retrieve_all_Rooms_for_an_owner_given_its_username_and_password() throws SQLException {
         /*
