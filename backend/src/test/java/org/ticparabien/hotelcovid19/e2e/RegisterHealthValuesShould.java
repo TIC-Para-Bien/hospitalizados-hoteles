@@ -2,15 +2,13 @@ package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.ticparabien.hotelcovid19.controller.Routes;
@@ -24,10 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @WithMockUser("patient")
-public class RegisterHealthValuesShould {
+class RegisterHealthValuesShould {
 
     @Autowired
     private MockMvc mvc;
@@ -38,9 +35,9 @@ public class RegisterHealthValuesShould {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void registering_high_fever_should_inform_doctors() throws Exception {
+    void registering_high_fever_should_inform_doctors() throws Exception {
         Patient patientWithFever = addPatient();
-        Float expectedTemperature = Float.valueOf(38f);
+        Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
         mvc.perform(post(Routes.PatientHealthRecord)
@@ -70,7 +67,7 @@ public class RegisterHealthValuesShould {
         return objectMapper.writeValueAsString(dto);
     }
 
-    public Patient addPatient() {
+    private Patient addPatient() {
         Patient patient = new Patient();
         patient.setName("pablo");
         patient.setPersonalId("484849384");

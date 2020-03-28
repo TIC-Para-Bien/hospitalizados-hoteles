@@ -20,10 +20,13 @@
         <jacoco.version>0.8.5</jacoco.version>
         <java.version>1.8</java.version>
         <json.path>2.4.0</json.path>
+        <junit.version>5.5.2</junit.version>
+        <junit4.version>4.13</junit4.version>
         <lombok.version>1.18.10</lombok.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.failsafe.version>2.22.2</maven.failsafe.version>
         <maven.project.info.reports.version>3.0.0</maven.project.info.reports.version>
+        <mockito.version>3.3.0</mockito.version>
         <postqresql.version>9.4-1201-jdbc4</postqresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -105,6 +108,36 @@
         </dependency>
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit4.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
