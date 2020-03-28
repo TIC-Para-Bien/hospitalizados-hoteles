@@ -11,6 +11,8 @@
 
     <properties>
         <assertj.version>3.6.2</assertj.version>
+        <db.unit.version>2.5.4</db.unit.version>
+        <db.unit.spring.version>1.3.0</db.unit.spring.version>
         <flyway.version>5.2.4</flyway.version>
         <guava.version>22.0</guava.version>
         <h2.version>1.4.200</h2.version>
@@ -153,6 +155,18 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>${db.unit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <version>${db.unit.spring.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

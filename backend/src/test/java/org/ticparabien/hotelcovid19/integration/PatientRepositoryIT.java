@@ -1,8 +1,13 @@
 package org.ticparabien.hotelcovid19.integration;
 
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
@@ -12,6 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DataJpaTest
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 class PatientRepositoryIT {
 
     private static final String NAME = "name";
@@ -23,15 +29,9 @@ class PatientRepositoryIT {
     @Autowired
     private PatientRepository repository;
 
+    @DatabaseSetup("/dataset/one-patient.xml")
     @Test
     void given_AnExistingPersonalId_When_RetrievingPatientByPersonalId_Then_GetEntity() {
-        Patient patient = Patient.builder()
-                .name(NAME)
-                .personalId(PERSONAL_ID)
-                .phone(PHONE)
-                .build();
-        repository.saveAndFlush(patient);
-
         Optional<Patient> optional = repository.findByPersonalId(PERSONAL_ID);
 
         assertThat(optional.isPresent(), is(true));
