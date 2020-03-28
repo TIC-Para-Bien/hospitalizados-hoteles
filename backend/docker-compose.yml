@@ -23,6 +23,7 @@ services:
       - m2-cache:/root/.m2:${VOLUME_CACHING}
     ports:
       - 8080:8080
+      - 5005:5005
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=web"
