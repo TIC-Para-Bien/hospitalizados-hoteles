@@ -43,8 +43,4 @@ public class Patient {
     public float temperature() {
         return lastReportedHealthRecord.getTemperature();
     }
-
-    public void setLastReportedHealthRecord(LastReportedHealthRecord lastReportedHealthRecord) {
-        this.lastReportedHealthRecord = lastReportedHealthRecord;
-    }
 }

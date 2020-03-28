@@ -14,10 +14,12 @@
         <flyway.version>5.2.4</flyway.version>
         <guava.version>22.0</guava.version>
         <h2.version>1.4.200</h2.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <hibernate.version>5.4.12.Final</hibernate.version>
         <jackson.version>2.10.3</jackson.version>
         <jacoco.version>0.8.5</jacoco.version>
         <java.version>1.8</java.version>
+        <json.path>2.4.0</json.path>
         <lombok.version>1.18.10</lombok.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.failsafe.version>2.22.2</maven.failsafe.version>
@@ -121,6 +123,17 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json.path}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-server</artifactId>
