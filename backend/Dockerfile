@@ -1,22 +1,10 @@
-ARG maven_version=3.5.3
+FROM openjdk:11-jdk-slim
 
-FROM maven:${maven_version}-jdk-8-alpine as compilation
+ENV JAVA_OPTS=""
+ENV NODE=""
+ENV DOMAIN=""
 
-WORKDIR /build
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
 
-COPY pom.xml .
-
-RUN mvn dependency:go-offline
-
-COPY . .
-
-RUN mvn package -Dmaven.test.skip=true
-
-#FROM openjdk:8-jre-alpine
-FROM openjdk:13
-
-EXPOSE 8080
-
-COPY --from=compilation /build/target/hotelcovid19-1.0-SNAPSHOT.jar .
-
-CMD java -jar hotelcovid19-1.0-SNAPSHOT.jar
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]

@@ -1,6 +1,9 @@
 package org.ticparabien.hotelcovid19.e2e;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
+import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
+import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,22 +40,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser("patient")
 public class RegisterHealthValuesShould {
-    //@Autowired
-    //private RegisterHealth registerHealth;
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     @Test
     public void registering_high_fever_should_inform_doctors() throws Exception {
-        HealthRegisterDto register = new HealthRegisterDto();
-        Patient patient = add_patient();
-        register.patientId = patient.id.toString();
-        register.fever = BigDecimal.valueOf(39);
-        ObjectMapper mapper = new ObjectMapper();
-        String sentJson = mapper.writeValueAsString(register);
+        Patient patientWithFever = addPatient();
+        Float expectedTemperature = Float.valueOf(38f);
+        String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
         mvc.perform(post(Routes.PatientHealthRecord)
                 .content(sentJson)
@@ -66,21 +70,40 @@ public class RegisterHealthValuesShould {
 
         String resultContentAsString = result.getResponse().getContentAsString();
 
-        assertThat(resultContentAsString).contains("\"id\":" + patient.id);
+        assertThat(resultContentAsString).contains("\"patientId\":" + patientWithFever.getId());
+        assertThat(resultContentAsString).contains("\"temperature\":" + expectedTemperature);
     }
 
-    public Patient add_patient() {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO patient(personal_id, name, phone) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, "12345678A");
-            ps.setString(2, "Irrelevant name");
-            ps.setString(3, "650123456");
-            return ps;
-        }, keyHolder);
-        Number insertedPatientId = (Number) keyHolder.getKeyList().get(0).get("id");
+    private String healthRecordJson(Patient patientWithFever, Float fever) throws JsonProcessingException {
+        LastReportedHealthRecord registerForPatientWithFever = new LastReportedHealthRecord();
+        registerForPatientWithFever.setCough(true);
+        registerForPatientWithFever.setHeadache(true);
+        registerForPatientWithFever.setThroatAche(true);
+        registerForPatientWithFever.setTemperature(fever);
+        registerForPatientWithFever.setPatient(patientWithFever);
+        registerForPatientWithFever.setCreationOn(new Date());
+        return new ObjectMapper().writeValueAsString(registerForPatientWithFever);
+    }
 
-        return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id = ?", new Object[]{insertedPatientId}, patientRowMapper());
+    public Patient addPatient() {
+        /*Patient patient = Patient.builder()
+                .name("pablo")
+                .personalId("484849384")
+                .phone("697839848").build();*/
+
+        Patient patient = new Patient();
+
+        patient.setName("pablo");
+        patient.setPersonalId("484849384");
+        patient.setPhone("697839848");
+
+
+        return patientRepository.saveAndFlush(patient);
+
+    }
+
+    public void deleteAllPatients() {
+        jdbcTemplate.update("DELETE FROM patient");
     }
 
     private RowMapper<Patient> patientRowMapper() {
