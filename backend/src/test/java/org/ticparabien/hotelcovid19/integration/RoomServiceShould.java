@@ -1,16 +1,15 @@
 package org.ticparabien.hotelcovid19.integration;
 
-import org.ticparabien.hotelcovid19.helpers.IntegrationTests;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+class RoomServiceShould {
 
-public class RoomServiceShould extends IntegrationTests {
-
+    @Disabled
     @Test
-    public void create_an_organization_with_one_owner_allowed() throws SQLException {
+    void create_an_organization_with_one_owner_allowed() throws SQLException {
         /*
         RoomService RoomService = TestFactory.RoomService(Configuration.connectionTestDatabase);
         Credentials webCredentials = new Credentials("web_username", "web_password");
@@ -23,8 +22,9 @@ public class RoomServiceShould extends IntegrationTests {
          */
     }
 
+    @Disabled
     @Test
-    public void retrieve_all_Rooms_for_an_owner_given_its_username_and_password() throws SQLException {
+    void retrieve_all_Rooms_for_an_owner_given_its_username_and_password() throws SQLException {
         /*
         RoomService RoomService = TestFactory.RoomService(Configuration.connectionTestDatabase);
         String firstRoomName = "First Room";

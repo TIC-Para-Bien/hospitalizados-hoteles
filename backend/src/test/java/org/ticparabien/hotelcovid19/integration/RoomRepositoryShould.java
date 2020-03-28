@@ -1,10 +1,6 @@
 package org.ticparabien.hotelcovid19.integration;
 
-import org.ticparabien.hotelcovid19.helpers.IntegrationTests;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
-
-public class RoomRepositoryShould extends IntegrationTests {
+public class RoomRepositoryShould {
 /*
     private PostgresRoomRepository RoomRepository;
 
