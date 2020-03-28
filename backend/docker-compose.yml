@@ -1,0 +1,68 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DATASOURCE_DBNAME}
+      POSTGRES_USER: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  app:
+    build: .
+    environment:
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_DBNAME: ${DATASOURCE_DBNAME}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+    volumes:
+      - ./:/workspace:${VOLUME_CACHING}
+      - m2-cache:/root/.m2:${VOLUME_CACHING}
+    ports:
+      - 8080:8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.routers.app.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.middlewares.app-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.app.middlewares=app-https-redirect"
+      - "traefik.http.routers.app-secure.entrypoints=websecure"
+      - "traefik.http.routers.app-secure.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.routers.app-secure.tls=true"
+      - "traefik.http.routers.app-secure.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.app-secure.service=app"
+      - "traefik.http.services.app.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
+    networks:
+      - internal
+    command: ["/wait-for-it.sh", "db:5432", "--", "/start.sh"]
+
+  reverse_proxy:
+    image: traefik:latest
+    restart: on-failure
+    networks:
+      - internal
+    command:
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
+      - "--certificatesresolvers.mytlschallenge.acme.email=${LETSENCRYPT_NOTIFICATION_EMAIL}"
+      - "--certificatesresolvers.mytlschallenge.acme.storage=/acme/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-acme:/acme
+
+volumes:
+  postgres-data:
+  traefik-acme:
+  m2-cache:
+
+networks:
+  internal:

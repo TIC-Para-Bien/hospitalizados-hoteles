@@ -1,10 +1,11 @@
-FROM openjdk:11-jdk-slim
+FROM maven:3.6.3-jdk-11-slim
 
-ENV JAVA_OPTS=""
-ENV NODE=""
-ENV DOMAIN=""
+#ENV JAVA_OPTS=""
+#ENV NODE=""
+#ENV DOMAIN=""
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+WORKDIR /workspace
+COPY start.sh /
+COPY wait-for-it.sh /
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]
+CMD /start.sh
