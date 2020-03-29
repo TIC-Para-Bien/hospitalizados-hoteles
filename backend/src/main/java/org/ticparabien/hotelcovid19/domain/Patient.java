@@ -21,6 +21,9 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "HASHED_PASSWORD", nullable = false)
+    private String hashedPassword;
+
     @Column(name = "PERSONAL_ID", nullable = false)
     private String personalId;
 

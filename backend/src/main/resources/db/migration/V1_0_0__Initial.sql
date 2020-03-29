@@ -1,6 +1,7 @@
 CREATE TABLE patient
 (
     ID              SERIAL PRIMARY KEY NOT NULL,
+    HASHED_PASSWORD VARCHAR           NOT NULL,
     PERSONAL_ID     VARCHAR(50)       NOT NULL,
     NAME            VARCHAR(50)       NOT NULL,
     PHONE           VARCHAR(50)       NOT NULL
