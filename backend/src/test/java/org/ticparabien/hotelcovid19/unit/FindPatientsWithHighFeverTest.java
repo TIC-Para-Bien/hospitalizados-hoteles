@@ -42,8 +42,8 @@ class FindPatientsWithHighFeverTest {
                 .build();
         List<HealthRecord> healthRecords = Collections.singletonList(healthRecord1);
         given(healthRecordRepository.findAllLastRecordsWithTemperatureHigherThanAfterDate(temperature, date)).willReturn(healthRecords);
-
         PatientRequestByTemperatureAndDateDto dto = new PatientRequestByTemperatureAndDateDto(temperature, date);
+
         List<HealthRecord> healthRecordList = action.execute(dto);
 
         assertThat(healthRecordList.size()).isEqualTo(1);
@@ -51,7 +51,11 @@ class FindPatientsWithHighFeverTest {
     }
 
     private Patient createPatientWithFever() {
-        Patient patientWithHighTemperature = new Patient(1, "personalid", "123123123", "nombre");
-        return patientWithHighTemperature;
+        return Patient.builder()
+                .id(1)
+                .personalId("personalId")
+                .phone("123123123")
+                .name("name")
+                .build();
     }
 }

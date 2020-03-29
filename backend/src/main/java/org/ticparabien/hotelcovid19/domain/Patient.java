@@ -38,11 +38,4 @@ public class Patient {
     @JoinColumn(name = "ROOM_ID")
     @ManyToOne
     private Room room;
-
-    public Patient(Integer id, String personalId, String phone, String name) {
-        this.id = id;
-        this.personalId = personalId;
-        this.phone = phone;
-        this.name = name;
-    }
 }

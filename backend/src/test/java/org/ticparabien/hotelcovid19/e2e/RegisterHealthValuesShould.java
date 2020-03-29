@@ -12,7 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.ticparabien.hotelcovid19.controller.Routes;
-import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
+import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
@@ -64,7 +64,7 @@ class RegisterHealthValuesShould {
     }
 
     private String healthRecordJson(Patient patientWithFever, Float temperature) throws JsonProcessingException {
-        HealthRegisterDto dto = HealthRegisterDto.builder()
+        HealthRecordDto dto = HealthRecordDto.builder()
                 .cough(true)
                 .headache(true)
                 .temperature(temperature)

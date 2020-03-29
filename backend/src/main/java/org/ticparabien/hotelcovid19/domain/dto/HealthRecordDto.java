@@ -1,4 +1,4 @@
-package org.ticparabien.hotelcovid19.domain;
+package org.ticparabien.hotelcovid19.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HealthRegisterDto {
+public class HealthRecordDto {
 
-    private String patientId;
+    private Integer id;
+
+    private Integer patientId;
 
     private Float temperature;
 

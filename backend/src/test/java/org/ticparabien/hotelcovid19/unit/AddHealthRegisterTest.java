@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
+import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
@@ -48,7 +48,7 @@ class AddHealthRegisterTest {
                 .throatAche(true)
                 .build();
         when(healthRecordRepository.save(any())).thenReturn(healthRecord);
-        HealthRegisterDto dto = HealthRegisterDto.builder()
+        HealthRecordDto dto = HealthRecordDto.builder()
                 .patientId(personalId)
                 .build();
 
@@ -60,7 +60,7 @@ class AddHealthRegisterTest {
     @Test
     void given_AHealthRecordBelongingToANonExistentPatient_When_SavingTheRecord_Then_ThrowsPatientNotFound() {
         String personalId = "1321313";
-        HealthRegisterDto dto = HealthRegisterDto.builder()
+        HealthRecordDto dto = HealthRecordDto.builder()
                 .patientId(personalId)
                 .build();
         when(patientRepository.findByPersonalId(personalId)).thenThrow(PatientNotFound.class);
