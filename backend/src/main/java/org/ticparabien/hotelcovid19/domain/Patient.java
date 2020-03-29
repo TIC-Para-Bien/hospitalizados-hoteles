@@ -1,7 +1,6 @@
 package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Entity
-@EnableAutoConfiguration
 @Table(name = "patient")
 public class Patient {
 
@@ -36,6 +34,10 @@ public class Patient {
     @ToString.Exclude
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<HealthRecord> healthRecords;
+
+    @JoinColumn(name = "ROOM_ID")
+    @ManyToOne
+    private Room room;
 
     public Patient(Integer id, String personalId, String phone, String name) {
         this.id = id;

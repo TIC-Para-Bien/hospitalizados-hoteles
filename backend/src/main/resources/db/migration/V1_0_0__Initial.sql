@@ -1,10 +1,20 @@
+CREATE TABLE rooms
+(
+    ID              SERIAL PRIMARY KEY NOT NULL,
+    NAME            VARCHAR(255) UNIQUE,
+    INFO            TEXT NULL,
+    MAX_CAPACITY    INTEGER NOT NULL
+);
+
 CREATE TABLE patient
 (
     ID              SERIAL PRIMARY KEY NOT NULL,
     HASHED_PASSWORD VARCHAR           NOT NULL,
     PERSONAL_ID     VARCHAR(50)       NOT NULL,
     NAME            VARCHAR(50)       NOT NULL,
-    PHONE           VARCHAR(50)       NOT NULL
+    PHONE           VARCHAR(50)       NOT NULL,
+    ROOM_ID         INTEGER           NULL,
+    FOREIGN KEY (ROOM_ID) REFERENCES rooms(ID)
 );
 
 CREATE TABLE health_records
@@ -15,22 +25,9 @@ CREATE TABLE health_records
     TEMPERATURE     DECIMAL NOT NULL,
     COUGH           BOOLEAN NOT NULL,
     HEADACHE        BOOLEAN NOT NULL,
-    THROAT_ACHE     BOOLEAN NOT NULL
+    THROAT_ACHE     BOOLEAN NOT NULL,
+    FOREIGN KEY (PATIENT_ID) REFERENCES patient(ID)
 );
-
---CREATE TABLE Rooms_owners
---(
---    ID    SERIAL PRIMARY KEY NOT NULL,
---    Room  INTEGER,
---    OWNER INTEGER
---);
-
---CREATE TABLE Rooms
---(
---    ID        SERIAL PRIMARY KEY NOT NULL,
---    NAME      VARCHAR(200)       NOT NULL,
---    EXTRADATA TEXT               NULL
---);
 
 --CREATE TABLE supervisor
 --(
@@ -40,11 +37,6 @@ CREATE TABLE health_records
 --    EXTRA_DATA    TEXT               NULL
 --);
 
---
---INSERT INTO Rooms(name)
---VALUES ('Baberia Paco'),
---       ('Tim Barbers'),
---       ('Superbarbers');
 --
 --INSERT INTO supervisor(username, password_hash)
 --VALUES ('hotelcovid19@ticparabien.org', '$2a$12$5KiR0C/FopFFHk3m39xf6eQyiiBbHUSrYVnhbsFXX87Sg6zUGXue2');

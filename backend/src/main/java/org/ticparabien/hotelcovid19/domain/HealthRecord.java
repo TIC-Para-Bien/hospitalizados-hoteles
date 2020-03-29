@@ -2,7 +2,6 @@ package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.Date;
 @EqualsAndHashCode
 @ToString
 @Entity
-@EnableAutoConfiguration
 @Table(name = "health_records")
 public class HealthRecord {
 
