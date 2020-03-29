@@ -35,6 +35,10 @@ public class Patient {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<HealthRecord> healthRecords;
 
+    @JoinColumn(name = "")
+    @ManyToOne
+    private Room room;
+
     public Patient(Integer id, String personalId, String phone, String name) {
         this.id = id;
         this.personalId = personalId;
