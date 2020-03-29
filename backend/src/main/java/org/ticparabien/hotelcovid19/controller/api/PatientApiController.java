@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.HighFeverDto;
-import org.ticparabien.hotelcovid19.domain.actions.FindAllPatients;
-import org.ticparabien.hotelcovid19.domain.actions.FindPatientById;
-import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
-import org.ticparabien.hotelcovid19.domain.actions.RegisterPatient;
+import org.ticparabien.hotelcovid19.domain.actions.*;
 import org.ticparabien.hotelcovid19.domain.dto.PatientDto;
 import org.ticparabien.hotelcovid19.domain.dto.PatientRequestByTemperatureAndDateDto;
 import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientRequestDto;
@@ -40,6 +37,12 @@ public class PatientApiController {
 
     @Autowired
     private FindAllPatients findAllPatients;
+
+    @Autowired
+    private CheckInPatient checkInPatient;
+
+    @Autowired
+    private CheckOutPatient checkOutPatient;
 
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
@@ -74,5 +77,17 @@ public class PatientApiController {
         return findPatientById.execute(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/api/patients/{id}/room/{roomId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void roomCheckIn(@PathVariable("id") Integer patientId, @PathVariable("roomId") Integer roomId) {
+        checkInPatient.execute(patientId, roomId);
+    }
+
+    @DeleteMapping("/api/patients/{id}/room")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void roomCheckOut(@PathVariable("id") Integer patientId) {
+        checkOutPatient.execute(patientId);
     }
 }

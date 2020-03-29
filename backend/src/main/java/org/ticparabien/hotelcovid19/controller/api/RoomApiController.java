@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.ticparabien.hotelcovid19.domain.dto.RoomDto;
 import org.ticparabien.hotelcovid19.domain.service.RoomService;
 
-@RestController("/api/rooms")
+import java.net.URI;
+
+@RestController
+@RequestMapping("/api/rooms")
 public class RoomApiController {
 
     @Autowired
@@ -15,8 +19,15 @@ public class RoomApiController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addNewRoom(@RequestBody RoomDto dto){
-        roomService.createRoom(dto);
+    public ResponseEntity<Void> addNewRoom(@RequestBody RoomDto dto){
+        Integer roomId = roomService.createRoom(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(roomId)
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

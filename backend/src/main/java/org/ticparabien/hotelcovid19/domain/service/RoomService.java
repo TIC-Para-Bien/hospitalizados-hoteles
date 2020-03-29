@@ -20,9 +20,10 @@ public class RoomService {
         this.roomMapper = roomMapper;
     }
 
-    public void createRoom(RoomDto dto) {
+    public Integer createRoom(RoomDto dto) {
         Room room = roomMapper.mapToEntity(dto);
-        roomRepository.save(room);
+        room = roomRepository.save(room);
+        return room.getId();
     }
 
     public Optional<RoomDto> getRoomById(Integer id) {

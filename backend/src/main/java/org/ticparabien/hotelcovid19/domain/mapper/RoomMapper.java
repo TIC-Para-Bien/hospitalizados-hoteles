@@ -1,11 +1,19 @@
 package org.ticparabien.hotelcovid19.domain.mapper;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.ticparabien.hotelcovid19.domain.Room;
 import org.ticparabien.hotelcovid19.domain.dto.RoomDto;
 
+import java.util.stream.Collectors;
+
 @Component
+@AllArgsConstructor
 public class RoomMapper {
+
+    @Autowired
+    private PatientMapper patientMapper;
 
     public RoomDto mapToDto(Room entity) {
         return RoomDto.builder()
@@ -13,6 +21,9 @@ public class RoomMapper {
                 .name(entity.getName())
                 .info(entity.getInfo())
                 .maxCapacity(entity.getMaxCapacity())
+                .patients(entity.getPatients().stream()
+                    .map(patientMapper::mapToDto)
+                    .collect(Collectors.toList()))
                 .build();
     }
 
