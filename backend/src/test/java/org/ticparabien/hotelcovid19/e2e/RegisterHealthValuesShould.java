@@ -76,10 +76,12 @@ class RegisterHealthValuesShould {
     }
 
     private Patient addPatient() {
-        Patient patient = new Patient();
-        patient.setName("pablo");
-        patient.setPersonalId("484849384");
-        patient.setPhone("697839848");
+        Patient patient = Patient.builder()
+                .hashedPassword("hashedPassword")
+                .name("pablo")
+                .personalId("484849384")
+                .phone("697839848")
+                .build();
 
         return patientRepository.saveAndFlush(patient);
     }
