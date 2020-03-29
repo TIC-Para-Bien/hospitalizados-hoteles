@@ -1,6 +1,6 @@
 # README #
 
-Durante COVID-19 en Marzo de 2020, algunos pacientes estan siendo hospitalizados enn hoteles.
+Durante COVID-19 en Marzo de 2020, algunos pacientes estan siendo hospitalizados en hoteles.
 Con este software pueden reportar su estado de salud periodicamente
 
 ### Frontend ###
