@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RoomMapper {
 
-    @Autowired
     private PatientMapper patientMapper;
 
     public RoomDto mapToDto(Room entity) {

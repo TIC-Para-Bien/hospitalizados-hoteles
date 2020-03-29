@@ -69,7 +69,7 @@ class RegisterHealthValuesShould {
                 .headache(true)
                 .temperature(temperature)
                 .throatAche(true)
-                .patientId(patientWithFever.getPersonalId())
+                .patientId(patientWithFever.getId())
                 .build();
 
         return objectMapper.writeValueAsString(dto);

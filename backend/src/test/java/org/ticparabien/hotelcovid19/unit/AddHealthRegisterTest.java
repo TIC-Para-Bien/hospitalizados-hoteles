@@ -42,14 +42,14 @@ class AddHealthRegisterTest {
                 .id(patientId)
                 .personalId(personalId)
                 .build();
-        when(patientRepository.findByPersonalId(personalId)).thenReturn(Optional.of(patient));
+        when(patientRepository.findById(patientId)).thenReturn(Optional.of(patient));
         HealthRecord healthRecord = HealthRecord.builder()
                 .id(1)
                 .throatAche(true)
                 .build();
         when(healthRecordRepository.save(any())).thenReturn(healthRecord);
         HealthRecordDto dto = HealthRecordDto.builder()
-                .patientId(personalId)
+                .patientId(patientId)
                 .build();
 
         action.execute(dto);
@@ -59,11 +59,11 @@ class AddHealthRegisterTest {
 
     @Test
     void given_AHealthRecordBelongingToANonExistentPatient_When_SavingTheRecord_Then_ThrowsPatientNotFound() {
-        String personalId = "1321313";
+        Integer patientId = 1;
         HealthRecordDto dto = HealthRecordDto.builder()
-                .patientId(personalId)
+                .patientId(patientId)
                 .build();
-        when(patientRepository.findByPersonalId(personalId)).thenThrow(PatientNotFound.class);
+        when(patientRepository.findById(patientId)).thenThrow(PatientNotFound.class);
 
         assertThrows(PatientNotFound.class, () -> action.execute(dto));
     }

@@ -67,7 +67,7 @@ public class PatientApiController {
     }
 
     @GetMapping("/api/patients")
-    public ResponseEntity<List<PatientDto>> getAllPatients(@RequestBody RegisterPatientRequestDto dto) {
+    public ResponseEntity<List<PatientDto>> getAllPatients() {
         List<PatientDto> patients = findAllPatients.execute();
         return ResponseEntity.ok(patients);
     }

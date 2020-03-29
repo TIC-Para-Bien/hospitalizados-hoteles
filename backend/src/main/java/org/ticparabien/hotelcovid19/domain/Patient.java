@@ -32,6 +32,7 @@ public class Patient {
     private String name;
 
     @ToString.Exclude
+    @OrderBy(value = "createdOn DESC")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<HealthRecord> healthRecords;
 
