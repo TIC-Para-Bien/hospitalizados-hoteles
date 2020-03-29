@@ -26,7 +26,16 @@ $ docker-compose up -d
 
 Wait for the environment to get ready. You can view the progress of the starting proccess executing `docker-compose logs -f`
 
-Once the app is running, follow [this guide](https://blog.jetbrains.com/idea/2019/04/debug-your-java-applications-in-docker-using-intellij-idea/) to enable remote debugging in the app.
+Once the app is running:
+
+- You can have [autoreload](https://medium.com/@lhartikk/development-environment-in-spring-boot-with-docker-734ad6c50b34) when you are making changes in the app without doing a new `mvn clean install`.
+- Follow [this guide](https://blog.jetbrains.com/idea/2019/04/debug-your-java-applications-in-docker-using-intellij-idea/) to enable remote debugging in the app.
+
+### Remote debugging / autoreload
+
+- Intellij: Debug with Docker Compose <https://www.jetbrains.com/help/idea/run-and-debug-a-spring-boot-application-using-docker-compose.html>
+- Docker intellij remote debug <https://www.docker.com/blog/spring-boot-development-docker/>
+- Development Environment with spring-boot-devtools <https://medium.com/@lhartikk/development-environment-in-spring-boot-with-docker-734ad6c50b34>
  
 ### Production
 
