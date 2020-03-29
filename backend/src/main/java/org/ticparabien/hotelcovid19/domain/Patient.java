@@ -1,7 +1,6 @@
 package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Entity
-@EnableAutoConfiguration
 @Table(name = "patient")
 public class Patient {
 
