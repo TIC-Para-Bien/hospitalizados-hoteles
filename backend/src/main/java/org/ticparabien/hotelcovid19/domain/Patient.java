@@ -1,17 +1,17 @@
 package org.ticparabien.hotelcovid19.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 @EnableAutoConfiguration
 @Table(name = "patient")
@@ -30,17 +30,14 @@ public class Patient {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "patient")
-    private LastReportedHealthRecord lastReportedHealthRecord;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<HealthRecord> healthRecords;
 
     public Patient(Integer id, String personalId, String phone, String name) {
         this.id = id;
         this.personalId = personalId;
         this.phone = phone;
         this.name = name;
-    }
-
-    public float temperature() {
-        return lastReportedHealthRecord.getTemperature();
     }
 }

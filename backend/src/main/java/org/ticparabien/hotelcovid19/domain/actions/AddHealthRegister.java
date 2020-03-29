@@ -3,7 +3,7 @@ package org.ticparabien.hotelcovid19.domain.actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
-import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
+import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.exception.PatientNotFound;
 import org.ticparabien.hotelcovid19.domain.repositories.HealthRecordRepository;
@@ -27,7 +27,7 @@ public class AddHealthRegister {
         Patient patient = patientRepository.findByPersonalId(dto.getPatientId())
                 .orElseThrow(() -> new PatientNotFound("Patient with id " + dto.getPatientId() + " not found"));
 
-        LastReportedHealthRecord entity = LastReportedHealthRecord.builder()
+        HealthRecord entity = HealthRecord.builder()
                 .cough(dto.getCough())
                 .headache(dto.getHeadache())
                 .temperature(dto.getTemperature())

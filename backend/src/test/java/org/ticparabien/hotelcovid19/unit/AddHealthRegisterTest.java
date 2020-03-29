@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
-import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
+import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
 import org.ticparabien.hotelcovid19.domain.exception.PatientNotFound;
@@ -43,7 +43,7 @@ class AddHealthRegisterTest {
                 .personalId(personalId)
                 .build();
         when(patientRepository.findByPersonalId(personalId)).thenReturn(Optional.of(patient));
-        LastReportedHealthRecord healthRecord = LastReportedHealthRecord.builder()
+        HealthRecord healthRecord = HealthRecord.builder()
                 .id(1)
                 .throatAche(true)
                 .build();
