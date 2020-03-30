@@ -36,7 +36,7 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
     volumes:
       - ./:/workspace:${VOLUME_CACHING}
-      - m2-cache:/root/.m2:${VOLUME_CACHING}
+      - m2-cache:/home/ubuntu/.m2:${VOLUME_CACHING}
     ports:
       - 8080:8080
       - 5005:5005
