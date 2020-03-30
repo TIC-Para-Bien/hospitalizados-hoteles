@@ -1,0 +1,41 @@
+#!groovy
+
+@Library('github.com/teecke/jenkins-pipeline-library@v3.4.1') _
+
+// Initialize global config
+cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
+
+pipeline {
+    agent { label 'docker' }
+
+    stages {
+        stage ('Initialize') {
+            steps  {
+                jplStart(cfg)
+            }
+        }
+        stage('Build') {
+            agent {
+                docker { image 'maven:3.6.3-jdk-11-slim' }
+            }
+            steps {
+                sh "mvn clean compile"
+            }
+        }
+    }
+
+    post {
+        always {
+            jplPostBuild(cfg)
+        }
+    }
+
+    options {
+        timestamps()
+        ansiColor('xterm')
+        buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+        timeout(time: 1, unit: 'DAYS')
+    }
+}
