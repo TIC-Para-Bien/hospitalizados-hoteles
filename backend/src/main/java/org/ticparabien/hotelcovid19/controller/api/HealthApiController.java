@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.ticparabien.hotelcovid19.controller.Routes;
-import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
+import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
 
 import java.net.URI;
@@ -22,7 +22,7 @@ public class HealthApiController {
 
     @PostMapping(Routes.PatientHealthRecord)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> addHealthRegister(@RequestBody HealthRegisterDto dto){
+    public ResponseEntity<Void> addHealthRegister(@RequestBody HealthRecordDto dto){
 
         Integer id = addHealthRegister.execute(dto);
 

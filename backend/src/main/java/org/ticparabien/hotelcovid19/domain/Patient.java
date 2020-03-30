@@ -32,17 +32,11 @@ public class Patient {
     private String name;
 
     @ToString.Exclude
+    @OrderBy(value = "createdOn DESC")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<HealthRecord> healthRecords;
 
     @JoinColumn(name = "ROOM_ID")
     @ManyToOne
     private Room room;
-
-    public Patient(Integer id, String personalId, String phone, String name) {
-        this.id = id;
-        this.personalId = personalId;
-        this.phone = phone;
-        this.name = name;
-    }
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
 
 import java.util.List;
 
@@ -22,5 +21,5 @@ public class PatientDto {
 
     private String name;
 
-    private List<HealthRegisterDto> healthRecords;
+    private List<HealthRecordDto> healthRecords;
 }
