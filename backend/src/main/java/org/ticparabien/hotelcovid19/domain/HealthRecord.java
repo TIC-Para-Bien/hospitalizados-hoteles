@@ -1,11 +1,7 @@
 package org.ticparabien.hotelcovid19.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,10 +10,11 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
-@EnableAutoConfiguration
 @Table(name = "health_records")
-public class LastReportedHealthRecord {
+public class HealthRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +22,10 @@ public class LastReportedHealthRecord {
 
     @CreationTimestamp
     @Column(name = "CREATED_ON")
-    private Date creationOn;
+    private Date createdOn;
 
-    @OneToOne(optional = false)
+    @JoinColumn(name = "PATIENT_ID")
+    @ManyToOne(optional = false)
     private Patient patient;
 
     @Column(name = "TEMPERATURE", nullable = false)

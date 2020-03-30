@@ -16,6 +16,11 @@ import org.ticparabien.hotelcovid19.domain.HealthRegisterDto;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,6 +39,8 @@ class RegisterHealthValuesShould {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Test
     void registering_high_fever_should_inform_doctors() throws Exception {
         Patient patientWithFever = addPatient();
@@ -47,8 +54,9 @@ class RegisterHealthValuesShould {
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION));
 
-        mvc.perform(get(Routes.HighFeverPatients)
-                .contentType(MediaType.APPLICATION_JSON)
+        Date date = Date.from(Instant.now().minus(1, ChronoUnit.HOURS));
+        String requestParams = String.format("?temperature=%s&date=%s", 37.7f, sdf.format(date));
+        mvc.perform(get(Routes.HighFeverPatients + requestParams)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.[0].patientId", is(patientWithFever.getId())))
@@ -68,10 +76,12 @@ class RegisterHealthValuesShould {
     }
 
     private Patient addPatient() {
-        Patient patient = new Patient();
-        patient.setName("pablo");
-        patient.setPersonalId("484849384");
-        patient.setPhone("697839848");
+        Patient patient = Patient.builder()
+                .hashedPassword("hashedPassword")
+                .name("pablo")
+                .personalId("484849384")
+                .phone("697839848")
+                .build();
 
         return patientRepository.saveAndFlush(patient);
     }

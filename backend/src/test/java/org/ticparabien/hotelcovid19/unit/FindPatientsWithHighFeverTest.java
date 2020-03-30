@@ -1,44 +1,57 @@
 package org.ticparabien.hotelcovid19.unit;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.ticparabien.hotelcovid19.domain.LastReportedHealthRecord;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.FindPatientsWithHighFever;
-import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
+import org.ticparabien.hotelcovid19.domain.dto.PatientRequestByTemperatureAndDateDto;
+import org.ticparabien.hotelcovid19.domain.repositories.HealthRecordRepository;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
+@ExtendWith(MockitoExtension.class)
 class FindPatientsWithHighFeverTest {
+
+    @Mock
+    private HealthRecordRepository healthRecordRepository;
+
+    private FindPatientsWithHighFever action;
+
+    @BeforeEach
+    void beforeEach() {
+        action = new FindPatientsWithHighFever(healthRecordRepository);
+    }
 
     @Test
     void filter_patients_with_high_temperature() {
-        PatientRepository repository = mock(PatientRepository.class);
-        List<Patient> patients = Arrays.asList(createPatientWithFever(), createPatientWithoutFever());
-        given(repository.findAll()).willReturn(patients);
+        float temperature = 37.5f;
+        Date date = new Date();
+        HealthRecord healthRecord1 = HealthRecord.builder()
+                .id(1)
+                .temperature(38f)
+                .patient(createPatientWithFever())
+                .build();
+        List<HealthRecord> healthRecords = Collections.singletonList(healthRecord1);
+        given(healthRecordRepository.findAllLastRecordsWithTemperatureHigherThanAfterDate(temperature, date)).willReturn(healthRecords);
 
-        FindPatientsWithHighFever service = new FindPatientsWithHighFever(repository);
-        List<Patient> patientsWithHighTemperature = service.execute();
+        PatientRequestByTemperatureAndDateDto dto = new PatientRequestByTemperatureAndDateDto(temperature, date);
+        List<HealthRecord> healthRecordList = action.execute(dto);
 
-        assertThat(patientsWithHighTemperature.size()).isEqualTo(1);
-        assertThat(patientsWithHighTemperature.get(0).temperature()).isEqualTo(38);
+        assertThat(healthRecordList.size()).isEqualTo(1);
+        assertThat(healthRecordList.get(0).getTemperature()).isEqualTo(38);
     }
 
     private Patient createPatientWithFever() {
-        LastReportedHealthRecord healthRecord = LastReportedHealthRecord.builder().temperature(38f).build();
         Patient patientWithHighTemperature = new Patient(1, "personalid", "123123123", "nombre");
-        patientWithHighTemperature.setLastReportedHealthRecord(healthRecord);
         return patientWithHighTemperature;
-    }
-
-    private Patient createPatientWithoutFever() {
-        LastReportedHealthRecord healthRecord = LastReportedHealthRecord.builder().temperature(36.5f).build();
-        Patient patientWithoutHighTemperature = new Patient(2, "personalid", "123123123", "nombre");
-        patientWithoutHighTemperature.setLastReportedHealthRecord(healthRecord);
-        return patientWithoutHighTemperature;
     }
 }
