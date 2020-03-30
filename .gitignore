@@ -59,3 +59,7 @@ yarn-error.log*
 
 # Platform
 backend/.env
+
+# Excluded files
+!/backend/platform/desktop/intellij_assets.tar.gz
+
