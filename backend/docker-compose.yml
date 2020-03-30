@@ -11,8 +11,24 @@ services:
     networks:
       - internal
 
+  desktop:
+    build:
+      context: platform/desktop
+    image: ticparabien/hospitalizados-hoteles-desktop:${tag_desktop}
+    volumes:
+      - ./:/workspace:${VOLUME_CACHING}
+      - ./platform/desktop/duing-start.sh:/root/duing-start.sh:ro
+      - m2-cache:/root/.m2:${VOLUME_CACHING}
+    ports:
+      - 3389:3389
+    networks:
+      - internal
+    command: /root/duing-start.sh
+
   app:
-    build: .
+    build:
+      context: platform/app
+    image: ticparabien/hospitalizados-hoteles-app:${tag_app}
     environment:
       DATASOURCE_URL: ${DATASOURCE_URL}
       DATASOURCE_DBNAME: ${DATASOURCE_DBNAME}
