@@ -26,6 +26,8 @@ class PatientRepositoryIT {
 
     private static final String PHONE = "phone";
 
+    private static final Integer AGE = 20;
+
     @Autowired
     private PatientRepository repository;
 
@@ -38,6 +40,7 @@ class PatientRepositoryIT {
         assertThat(optional.get().getName(), is(NAME));
         assertThat(optional.get().getPersonalId(), is(PERSONAL_ID));
         assertThat(optional.get().getPhone(), is(PHONE));
+        assertThat(optional.get().getAge(), is(AGE));
     }
 
     @Test

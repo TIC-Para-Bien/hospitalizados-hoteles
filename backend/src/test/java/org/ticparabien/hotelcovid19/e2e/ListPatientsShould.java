@@ -113,6 +113,7 @@ class ListPatientsShould {
                 .personalId("personalId")
                 .name("Herminia")
                 .phone("phone")
+                .age(20)
                 .build();
         patientRepository.save(patient);
 

@@ -21,5 +21,7 @@ public class PatientDto {
 
     private String name;
 
+    private Integer age;
+
     private List<HealthRecordDto> healthRecords;
 }

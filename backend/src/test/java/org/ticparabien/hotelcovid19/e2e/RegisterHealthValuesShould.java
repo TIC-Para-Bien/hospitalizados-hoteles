@@ -121,6 +121,7 @@ class RegisterHealthValuesShould {
                 .name("pablo")
                 .personalId("484849384")
                 .phone("697839848")
+                .age(20)
                 .build();
 
         return patientRepository.saveAndFlush(patient);

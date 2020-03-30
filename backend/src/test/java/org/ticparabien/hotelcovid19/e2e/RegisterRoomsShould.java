@@ -100,6 +100,7 @@ class RegisterRoomsShould {
                 .personalId("personalId")
                 .name("Herminia")
                 .phone("phone")
+                .age(68)
                 .build();
         return patientRepository.save(patient).getId();
     }

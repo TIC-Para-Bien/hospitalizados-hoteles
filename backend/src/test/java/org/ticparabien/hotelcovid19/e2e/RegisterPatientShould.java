@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.ticparabien.hotelcovid19.domain.dto.PatientDto;
+import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientRequestDto;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -30,10 +31,12 @@ class RegisterPatientShould {
         String name = "Eustaquio";
         String personalId = "personalId";
         String phone = "phone";
-        PatientDto dto = PatientDto.builder()
+        Integer age = 20;
+        RegisterPatientRequestDto dto = RegisterPatientRequestDto.builder()
                 .name(name)
                 .personalId(personalId)
                 .phone(phone)
+                .age(age)
                 .build();
         String body = objectMapper.writeValueAsString(dto);
 
@@ -54,7 +57,9 @@ class RegisterPatientShould {
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.personalId", is(personalId)))
-                .andExpect(jsonPath("$.phone", is(phone)));
+                .andExpect(jsonPath("$.phone", is(phone)))
+                .andExpect(jsonPath("$.age", is(age)));
+
     }
 }
 

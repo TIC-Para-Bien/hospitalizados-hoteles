@@ -19,6 +19,7 @@ public class PatientMapper {
                 .personalId(dto.getPersonalId())
                 .name(dto.getName())
                 .phone(dto.getPhone())
+                .age(dto.getAge())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class PatientMapper {
                 .personalId(entity.getPersonalId())
                 .name(entity.getName())
                 .phone(entity.getPhone())
+                .age(entity.getAge())
                 .healthRecords(entity.getHealthRecords().stream()
                         .map(healthRecordMapper::mapToDto)
                         .collect(Collectors.toList()))
