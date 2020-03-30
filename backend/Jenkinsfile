@@ -5,6 +5,22 @@
 // Initialize global config
 cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
 
+/**
+* Execute step command reading environment variables from the docker-compose  ".env.dist" file 
+* 
+* @param command String Command to be executed within 'backend' directory
+*/
+def doStepCommandWithEnv(String command) {
+    dir ('backend') {
+        docker.image('maven:3.6.3-jdk-11-slim').inside {
+            sh """
+            for envvar in \$(cat .env.dist|grep -v "^#"); do export \$envvar; done
+            ${command}
+            """
+        }
+
+    }
+}
 pipeline {
     agent { label 'docker' }
 
@@ -15,13 +31,36 @@ pipeline {
             }
         }
         stage('Build') {
-            agent {
-                docker { image 'maven:3.6.3-jdk-11-slim' }
-            }
             steps {
-                dir ('backend') {
-                    sh "mvn clean compile"
-                }
+                doStepCommandWithEnv("mvn clean compile")
+            }
+        }
+        stage('Unit tests') {
+            steps {
+                doStepCommandWithEnv("mvn test")
+            }
+        }
+        stage('Integration tests') {
+            steps {
+                doStepCommandWithEnv("mvn verify -P integration-test -Dtest=BlakenTest -DfailIfNoTests=false")
+            }
+        }
+    //    stage('Acceptance Tests') {
+    //        steps {
+    //            doStepCommandWithEnv("mvn verify -P acceptance-test -Dtest=BlakenTest -DfailIfNoTests=false")
+    //        }
+    //    }
+    //    stage('Sonar') {
+    //       withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-tpb') {
+    //            sh 'mvn sonar:sonar'
+    //        }
+    //    }
+    //    stage('Snyk dependencies') {
+    //      snykSecurity failOnIssues: false, organisation: 'ibai.eus', projectName: 'hospitalizacion-hoteles', snykInstallation: 'snyk-latest', snykTokenId: 'snyk-tpb'
+    //    }
+        stage('Package JAR') {
+            steps {
+                doStepCommandWithEnv("mvn package spring-boot:repackage -DskipTests")
             }
         }
     }
