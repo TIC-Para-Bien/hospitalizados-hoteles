@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 @Data
@@ -26,4 +27,19 @@ public class HealthRecordDto {
     private Boolean headache;
 
     private Boolean throatAche;
+
+    private Boolean respiratoryDistress;
+
+    private Boolean phlegm;
+
+    private Boolean smellTasteLoss;
+
+    private Boolean palpitations;
+
+    private Boolean diarrhea;
+
+    private Boolean musclePain;
+
+    private Boolean joinPain;
+
 }

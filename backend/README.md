@@ -73,6 +73,11 @@ Take care about database volumes!
 ### Other
 
 - Lombok
+```
+Configuration for IntelliJ IDE
+File Settings -> Plugins  -> lombok
+File Settings -> Annotation Processor -> enable annotation processing
+```
 
 ### QA
 

@@ -13,6 +13,13 @@ public class HealthRecordMapper {
                 .headache(dto.getHeadache())
                 .temperature(dto.getTemperature())
                 .throatAche(dto.getThroatAche())
+                .diarrhea(dto.getDiarrhea())
+                .joinPain(dto.getJoinPain())
+                .musclePain(dto.getMusclePain())
+                .palpitations(dto.getPalpitations())
+                .phlegm(dto.getPhlegm())
+                .respiratoryDistress(dto.getRespiratoryDistress())
+                .smellTasteLoss(dto.getSmellTasteLoss())
                 .build();
     }
 
@@ -25,6 +32,13 @@ public class HealthRecordMapper {
                 .headache(entity.getHeadache())
                 .temperature(entity.getTemperature())
                 .throatAche(entity.getThroatAche())
+                .diarrhea(entity.getDiarrhea())
+                .joinPain(entity.getJoinPain())
+                .musclePain(entity.getMusclePain())
+                .palpitations(entity.getPalpitations())
+                .phlegm(entity.getPhlegm())
+                .respiratoryDistress(entity.getRespiratoryDistress())
+                .smellTasteLoss(entity.getSmellTasteLoss())
                 .build();
     }
 }

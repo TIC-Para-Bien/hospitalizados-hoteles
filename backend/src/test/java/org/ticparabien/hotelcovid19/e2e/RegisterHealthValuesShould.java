@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -63,6 +64,38 @@ class RegisterHealthValuesShould {
                 .andExpect(jsonPath("$.[0].temperature", is((double) expectedTemperature)));
     }
 
+    @Test
+    void registering_health_record_and_retrieving_it_should_return_all_symptoms() throws Exception {
+        Patient patientWithFever = addPatient();
+        Float expectedTemperature = 38f;
+        String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
+
+        String healthRecordResourceURL = mvc.perform(post(Routes.PatientHealthRecord)
+                .content(sentJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andReturn().getResponse().getHeader(HttpHeaders.LOCATION);
+
+        String healthRecordId = healthRecordResourceURL.substring(healthRecordResourceURL.lastIndexOf('/') + 1);
+
+        mvc.perform(get("/api/patients/" + patientWithFever.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.healthRecords[0].temperature", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].cough", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].headache", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].throatAche", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].diarrhea", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].joinPain", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].musclePain", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].palpitations", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].phlegm", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].respiratoryDistress", notNullValue()))
+                .andExpect(jsonPath("$.healthRecords[0].smellTasteLoss", notNullValue()));
+    }
+
     private String healthRecordJson(Patient patientWithFever, Float temperature) throws JsonProcessingException {
         HealthRecordDto dto = HealthRecordDto.builder()
                 .cough(true)
@@ -70,6 +103,13 @@ class RegisterHealthValuesShould {
                 .temperature(temperature)
                 .throatAche(true)
                 .patientId(patientWithFever.getId())
+                .diarrhea(true)
+                .joinPain(true)
+                .musclePain(true)
+                .palpitations(true)
+                .phlegm(true)
+                .respiratoryDistress(false)
+                .smellTasteLoss(true)
                 .build();
 
         return objectMapper.writeValueAsString(dto);

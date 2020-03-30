@@ -1,40 +1,32 @@
 package org.ticparabien.hotelcovid19.domain.actions;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.exception.PatientNotFound;
+import org.ticparabien.hotelcovid19.domain.mapper.HealthRecordMapper;
 import org.ticparabien.hotelcovid19.domain.repositories.HealthRecordRepository;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
+@AllArgsConstructor
 @Service
 public class AddHealthRegister {
 
-    @Autowired
-    private HealthRecordRepository healthRecordRepository;
+    private final HealthRecordRepository healthRecordRepository;
 
-    @Autowired
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
-    public AddHealthRegister(HealthRecordRepository healthRecordRepository, PatientRepository patientRepository) {
-        this.healthRecordRepository = healthRecordRepository;
-        this.patientRepository = patientRepository;
-    }
+    private final HealthRecordMapper healthRecordMapper;
 
     public Integer execute(HealthRecordDto dto) {
-        Patient patient = patientRepository.findByPersonalId(dto.getPatientId())
+        Patient patient = patientRepository.findById(dto.getPatientId())
                 .orElseThrow(() -> new PatientNotFound("Patient with id " + dto.getPatientId() + " not found"));
 
-        HealthRecord entity = HealthRecord.builder()
-                .cough(dto.getCough())
-                .headache(dto.getHeadache())
-                .temperature(dto.getTemperature())
-                .throatAche(dto.getThroatAche())
-                .patient(patient)
-                .build();
-
+        HealthRecord entity = healthRecordMapper.mapToEntity(dto);
+        entity.setPatient(patient);
         entity = healthRecordRepository.save(entity);
 
         return entity.getId();

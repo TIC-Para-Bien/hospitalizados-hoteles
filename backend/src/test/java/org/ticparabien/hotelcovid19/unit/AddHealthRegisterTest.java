@@ -10,6 +10,7 @@ import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
 import org.ticparabien.hotelcovid19.domain.exception.PatientNotFound;
+import org.ticparabien.hotelcovid19.domain.mapper.HealthRecordMapper;
 import org.ticparabien.hotelcovid19.domain.repositories.HealthRecordRepository;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
@@ -31,7 +32,7 @@ class AddHealthRegisterTest {
 
     @BeforeEach
     void beforeEach() {
-        action = new AddHealthRegister(healthRecordRepository, patientRepository);
+        action = new AddHealthRegister(healthRecordRepository, patientRepository, new HealthRecordMapper());
     }
 
     @Test
