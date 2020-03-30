@@ -122,6 +122,13 @@ class ListPatientsShould {
                 .temperature(36.0f)
                 .throatAche(true)
                 .patient(patient)
+                .diarrhea(true)
+                .joinPain(true)
+                .musclePain(true)
+                .palpitations(true)
+                .phlegm(true)
+                .respiratoryDistress(false)
+                .smellTasteLoss(true)
                 .build();
         healthRecord = healthRecordRepository.save(healthRecord);
         healthRecord.setCreatedOn(date1);
@@ -133,6 +140,13 @@ class ListPatientsShould {
                 .temperature(36.0f)
                 .throatAche(true)
                 .patient(patient)
+                .diarrhea(true)
+                .joinPain(true)
+                .musclePain(true)
+                .palpitations(true)
+                .phlegm(true)
+                .respiratoryDistress(false)
+                .smellTasteLoss(true)
                 .build();
         healthRecord = healthRecordRepository.save(healthRecord);
         healthRecord.setCreatedOn(date2);
@@ -144,6 +158,13 @@ class ListPatientsShould {
                 .temperature(36.0f)
                 .throatAche(true)
                 .patient(patient)
+                .diarrhea(true)
+                .joinPain(true)
+                .musclePain(true)
+                .palpitations(true)
+                .phlegm(true)
+                .respiratoryDistress(false)
+                .smellTasteLoss(true)
                 .build();
         healthRecord = healthRecordRepository.save(healthRecord);
         healthRecord.setCreatedOn(date3);

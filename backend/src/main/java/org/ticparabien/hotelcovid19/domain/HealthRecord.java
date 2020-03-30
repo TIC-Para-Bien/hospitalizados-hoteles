@@ -39,4 +39,26 @@ public class HealthRecord {
 
     @Column(name = "THROAT_ACHE", nullable = false)
     private Boolean throatAche;
+
+    @Column(name = "RESPIRATORY_DISTRESS", nullable = false)
+    private Boolean respiratoryDistress;
+
+    @Column(name = "PHLEGM", nullable = false)
+    private Boolean phlegm;
+
+    @Column(name = "SMELL_TASTE_LOSS", nullable = false)
+    private Boolean smellTasteLoss;
+
+    @Column(name = "PALPITATIONS", nullable = false)
+    private Boolean palpitations;
+
+    @Column(name = "DIARRHEA", nullable = false)
+    private Boolean diarrhea;
+
+    @Column(name = "MUSCLE_PAIN", nullable = false)
+    private Boolean musclePain;
+
+    @Column(name = "JOIN_PAIN", nullable = false)
+    private Boolean joinPain;
+
 }

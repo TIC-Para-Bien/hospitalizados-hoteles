@@ -70,6 +70,13 @@ class RegisterHealthValuesShould {
                 .temperature(temperature)
                 .throatAche(true)
                 .patientId(patientWithFever.getId())
+                .diarrhea(true)
+                .joinPain(true)
+                .musclePain(true)
+                .palpitations(true)
+                .phlegm(true)
+                .respiratoryDistress(false)
+                .smellTasteLoss(true)
                 .build();
 
         return objectMapper.writeValueAsString(dto);
