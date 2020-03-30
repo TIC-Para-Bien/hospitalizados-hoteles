@@ -1,0 +1,84 @@
+#!groovy
+
+@Library('github.com/teecke/jenkins-pipeline-library@v3.4.1') _
+
+// Initialize global config
+cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
+
+// Disable commit message validation
+cfg.commitValidation.enabled = false
+
+/**
+* Execute step command reading environment variables from the docker-compose  ".env.dist" file 
+* 
+* @param command String Command to be executed within 'backend' directory
+*/
+def doStepCommandWithEnv(String command) {
+    dir ('backend') {
+        docker.image('maven:3.6.3-jdk-11-slim').inside {
+            sh """
+            for envvar in \$(cat .env.dist|grep -v "^#"); do export \$envvar; done
+            ${command}
+            """
+        }
+
+    }
+}
+pipeline {
+    agent { label 'docker' }
+
+    stages {
+        stage ('Initialize') {
+            steps  {
+                jplStart(cfg)
+            }
+        }
+        stage('Build') {
+            steps {
+                doStepCommandWithEnv("mvn clean compile")
+            }
+        }
+        stage('Unit tests') {
+            steps {
+                doStepCommandWithEnv("mvn test")
+            }
+        }
+        stage('Integration tests') {
+            steps {
+                doStepCommandWithEnv("mvn verify -P integration-test -Dtest=BlakenTest -DfailIfNoTests=false")
+            }
+        }
+    //    stage('Acceptance Tests') {
+    //        steps {
+    //            doStepCommandWithEnv("mvn verify -P acceptance-test -Dtest=BlakenTest -DfailIfNoTests=false")
+    //        }
+    //    }
+    //    stage('Sonar') {
+    //       withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-tpb') {
+    //            sh 'mvn sonar:sonar'
+    //        }
+    //    }
+    //    stage('Snyk dependencies') {
+    //      snykSecurity failOnIssues: false, organisation: 'ibai.eus', projectName: 'hospitalizacion-hoteles', snykInstallation: 'snyk-latest', snykTokenId: 'snyk-tpb'
+    //    }
+        stage('Package JAR') {
+            steps {
+                doStepCommandWithEnv("mvn package spring-boot:repackage -DskipTests")
+            }
+        }
+    }
+
+    post {
+        always {
+            jplPostBuild(cfg)
+        }
+    }
+
+    options {
+        timestamps()
+        ansiColor('xterm')
+        buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+}
