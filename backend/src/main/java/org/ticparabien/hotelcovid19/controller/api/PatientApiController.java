@@ -39,10 +39,14 @@ public class PatientApiController {
     private FindAllPatients findAllPatients;
 
     @Autowired
+    private FindAllPatientsOlderThan findAllPatientsOlderThan;
+
+    @Autowired
     private CheckInPatient checkInPatient;
 
     @Autowired
     private CheckOutPatient checkOutPatient;
+
 
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
@@ -68,7 +72,12 @@ public class PatientApiController {
 
     @GetMapping("/api/patients")
     public ResponseEntity<List<PatientDto>> getAllPatients(@RequestParam(required = false) Integer older) {
-        List<PatientDto> patients = findAllPatients.execute();
+        List<PatientDto> patients;
+        if (older != null) {
+            patients = findAllPatientsOlderThan.execute(older);
+        } else {
+            patients = findAllPatients.execute();
+        }
         return ResponseEntity.ok(patients);
     }
 

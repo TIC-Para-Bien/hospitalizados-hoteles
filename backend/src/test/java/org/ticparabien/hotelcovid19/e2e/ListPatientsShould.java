@@ -77,11 +77,7 @@ class ListPatientsShould {
         List<PatientDto> patients = objectMapper.readValue(response, javaType);
         assertThat(patients, hasSize(1));
         List<HealthRecordDto> healthRecords = patients.get(0).getHealthRecords();
-        assertThat(healthRecords, IsIterableContainingInOrder.contains(
-                hasProperty("createdOn", is(date2)),
-                hasProperty("createdOn", is(date3)),
-                hasProperty("createdOn", is(date1))
-        ));
+        assertPatientHealthRecordOrder(date2, date3, date1, patients.get(0));
     }
 
     @Test
@@ -90,22 +86,17 @@ class ListPatientsShould {
         Date date1 = Date.from(now.minus(2, ChronoUnit.HOURS));
         Date date2 = Date.from(now.minus(3, ChronoUnit.HOURS));
         Date date3 = Date.from(now.minus(1, ChronoUnit.HOURS));
-        createTestData(date1, date2, date3);
+        Patient patient = createTestData(date1, date2, date3);
 
-        String response = mvc.perform(get(PATIENTS_BASE_URI + "/1")
+        String response = mvc.perform(get(PATIENTS_BASE_URI + '/' + patient.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        PatientDto patient = objectMapper.readValue(response, PatientDto.class);
-        List<HealthRecordDto> healthRecords = patient.getHealthRecords();
-        assertThat(healthRecords, IsIterableContainingInOrder.contains(
-                hasProperty("createdOn", is(date3)),
-                hasProperty("createdOn", is(date1)),
-                hasProperty("createdOn", is(date2))
-        ));
+        PatientDto patientDto = objectMapper.readValue(response, PatientDto.class);
+        assertPatientHealthRecordOrder(date3, date1, date2, patientDto);
     }
 
     @Test
@@ -123,17 +114,27 @@ class ListPatientsShould {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$.[0].age", greaterThan(older)))
                 .andExpect(jsonPath("$.[0].healthRecords", hasSize(3)))
-                .andExpect(jsonPath("$.[0].healthRecords[0].createdOn", is(date3)))
-                .andExpect(jsonPath("$.[0].healthRecords[1].createdOn", is(date2)))
-                .andExpect(jsonPath("$.[0].healthRecords[2].createdOn", is(date1)))
                 .andExpect(jsonPath("$.[1].age", greaterThan(older)))
                 .andExpect(jsonPath("$.[1].healthRecords", hasSize(3)))
-                .andExpect(jsonPath("$.[1].healthRecords[0].createdOn", is(date3)))
-                .andExpect(jsonPath("$.[1].healthRecords[1].createdOn", is(date2)))
-                .andExpect(jsonPath("$.[1].healthRecords[2].createdOn", is(date1)))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
+
+        CollectionType javaType = objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, PatientDto.class);
+        List<PatientDto> patients = objectMapper.readValue(response, javaType);
+        assertThat(patients, hasSize(2));
+        assertPatientHealthRecordOrder(date3, date1, date2, patients.get(0));
+        assertPatientHealthRecordOrder(date3, date1, date2, patients.get(1));
+    }
+
+    private void assertPatientHealthRecordOrder(Date date1, Date date2, Date date3, PatientDto patient) {
+        List<HealthRecordDto> healthRecords = patient.getHealthRecords();
+        assertThat(healthRecords, IsIterableContainingInOrder.contains(
+                hasProperty("createdOn", is(date1)),
+                hasProperty("createdOn", is(date2)),
+                hasProperty("createdOn", is(date3))
+        ));
     }
 
     private void createTestDataToOldPeople(Date date1, Date date2, Date date3,
@@ -159,11 +160,12 @@ class ListPatientsShould {
         createHealthRecord(patient, date3);
     }
 
-    private void createTestData(Date date1, Date date2, Date date3) {
+    private Patient createTestData(Date date1, Date date2, Date date3) {
        Patient patient = createPatient(20);
        createHealthRecord(patient, date1);
        createHealthRecord(patient, date2);
        createHealthRecord(patient, date3);
+       return patient;
     }
 
     private Patient createPatient(Integer age){
