@@ -1,7 +1,6 @@
 package org.ticparabien.hotelcovid19.domain.actions;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.HealthRecord;

@@ -51,7 +51,7 @@ public class PatientApiController {
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
     public List<HighFeverDto> getHighFeverPatients(@RequestParam(defaultValue = FEVER_LIMIT) float temperature,
-                                                   @RequestParam(required = true) @DateTimeFormat(pattern = DATE_FORMAT) Date date) {
+                                                   @RequestParam @DateTimeFormat(pattern = DATE_FORMAT) Date date) {
         final PatientRequestByTemperatureAndDateDto dto = new PatientRequestByTemperatureAndDateDto(temperature, date);
         return findPatientsWithHighFever.execute(dto).stream()
                 .map(healthRecord -> new HighFeverDto(healthRecord.getPatient().getId(), healthRecord.getTemperature()))

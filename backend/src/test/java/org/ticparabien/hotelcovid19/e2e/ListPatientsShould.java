@@ -76,7 +76,6 @@ class ListPatientsShould {
                 .constructCollectionType(List.class, PatientDto.class);
         List<PatientDto> patients = objectMapper.readValue(response, javaType);
         assertThat(patients, hasSize(1));
-        List<HealthRecordDto> healthRecords = patients.get(0).getHealthRecords();
         assertPatientHealthRecordOrder(date2, date3, date1, patients.get(0));
     }
 

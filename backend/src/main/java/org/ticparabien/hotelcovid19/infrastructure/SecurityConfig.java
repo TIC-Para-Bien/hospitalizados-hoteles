@@ -46,7 +46,7 @@ public class SecurityConfig {
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
-        protected AuthenticationManager authenticationManager() throws Exception {
+        protected AuthenticationManager authenticationManager() {
             return new CustomAuthenticationProvider();
         }
 
@@ -68,7 +68,7 @@ public class SecurityConfig {
         }
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
+        public void configure(WebSecurity web) {
             web.ignoring().antMatchers("/resources/**");
         }
     }

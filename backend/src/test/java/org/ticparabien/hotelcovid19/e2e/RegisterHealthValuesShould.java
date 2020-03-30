@@ -70,15 +70,13 @@ class RegisterHealthValuesShould {
         Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
-        String healthRecordResourceURL = mvc.perform(post(Routes.PatientHealthRecord)
+        mvc.perform(post(Routes.PatientHealthRecord)
                 .content(sentJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andReturn().getResponse().getHeader(HttpHeaders.LOCATION);
-
-        String healthRecordId = healthRecordResourceURL.substring(healthRecordResourceURL.lastIndexOf('/') + 1);
 
         mvc.perform(get("/api/patients/" + patientWithFever.getId())
                 .accept(MediaType.APPLICATION_JSON))
