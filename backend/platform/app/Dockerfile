@@ -1,11 +1,11 @@
 FROM maven:3.6.3-jdk-11-slim
 
-#ENV JAVA_OPTS=""
-#ENV NODE=""
-#ENV DOMAIN=""
-
+# Put your code folder here as a docker volume
 WORKDIR /workspace
+
+# Assets
 COPY start.sh /
 COPY wait-for-it.sh /
 
+# Start script
 CMD /start.sh
