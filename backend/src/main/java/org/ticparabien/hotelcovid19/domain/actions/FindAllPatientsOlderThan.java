@@ -9,19 +9,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FindAllPatients {
+public class FindAllPatientsOlderThan {
 
     private final PatientRepository patientRepository;
 
     private final PatientMapper patientMapper;
 
-    public FindAllPatients(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public FindAllPatientsOlderThan(PatientRepository patientRepository, PatientMapper patientMapper) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
     }
 
-    public List<PatientDto> execute() {
-        return patientRepository.findAll().stream()
+    public List<PatientDto> execute(Integer age) {
+        return patientRepository.findAllOlderThan(age).stream()
                 .map(patientMapper::mapToDto)
                 .collect(Collectors.toList());
     }

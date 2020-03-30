@@ -24,12 +24,6 @@ class HealthRepositoryIT {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final String NAME = "name";
-
-    private static final String PERSONAL_ID = "personalId";
-
-    private static final String PHONE = "phone";
-
     @Autowired
     private HealthRecordRepository repository;
 

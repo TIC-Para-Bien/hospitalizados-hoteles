@@ -16,4 +16,6 @@ public class RegisterPatientRequestDto {
     private String phone;
 
     private String name;
+
+    private Integer age;
 }

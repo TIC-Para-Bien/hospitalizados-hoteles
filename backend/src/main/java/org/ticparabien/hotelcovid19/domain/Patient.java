@@ -31,6 +31,9 @@ public class Patient {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Column(name = "AGE", nullable = false)
+    private Integer age;
+
     @ToString.Exclude
     @OrderBy(value = "createdOn DESC")
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)

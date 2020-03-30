@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <patient ID="1" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId1" PHONE="phone1" NAME="name1"/>
-    <patient ID="2" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId2" PHONE="phone2" NAME="name2"/>
-    <patient ID="3" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId3" PHONE="phone3" NAME="name3"/>
-    <patient ID="4" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId4" PHONE="phone4" NAME="name4"/>
+    <patient ID="1" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId1" PHONE="phone1" NAME="name1" AGE="20"/>
+    <patient ID="2" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId2" PHONE="phone2" NAME="name2" AGE="80"/>
+    <patient ID="3" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId3" PHONE="phone3" NAME="name3" AGE="68"/>
+    <patient ID="4" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId4" PHONE="phone4" NAME="name4" AGE="43"/>
     <health_records ID="1" PATIENT_ID="1" CREATED_ON="2020-01-01 20:00:00" TEMPERATURE="37.9" COUGH="true" HEADACHE="true" THROAT_ACHE="true" RESPIRATORY_DISTRESS="true" PHLEGM="true" SMELL_TASTE_LOSS="true" PALPITATIONS="true" DIARRHEA="true" MUSCLE_PAIN="true" JOIN_PAIN="true"/>
     <health_records ID="2" PATIENT_ID="1" CREATED_ON="2020-01-01 21:00:00" TEMPERATURE="36.0" COUGH="true" HEADACHE="true" THROAT_ACHE="true" RESPIRATORY_DISTRESS="true" PHLEGM="true" SMELL_TASTE_LOSS="true" PALPITATIONS="true" DIARRHEA="true" MUSCLE_PAIN="true" JOIN_PAIN="true"/>
     <health_records ID="3" PATIENT_ID="2" CREATED_ON="2020-01-01 20:00:00" TEMPERATURE="35.9" COUGH="true" HEADACHE="true" THROAT_ACHE="true" RESPIRATORY_DISTRESS="true" PHLEGM="true" SMELL_TASTE_LOSS="true" PALPITATIONS="true" DIARRHEA="true" MUSCLE_PAIN="true" JOIN_PAIN="true"/>

@@ -39,15 +39,19 @@ public class PatientApiController {
     private FindAllPatients findAllPatients;
 
     @Autowired
+    private FindAllPatientsOlderThan findAllPatientsOlderThan;
+
+    @Autowired
     private CheckInPatient checkInPatient;
 
     @Autowired
     private CheckOutPatient checkOutPatient;
 
+
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
     public List<HighFeverDto> getHighFeverPatients(@RequestParam(defaultValue = FEVER_LIMIT) float temperature,
-                                                   @RequestParam(required = true) @DateTimeFormat(pattern = DATE_FORMAT) Date date) {
+                                                   @RequestParam @DateTimeFormat(pattern = DATE_FORMAT) Date date) {
         final PatientRequestByTemperatureAndDateDto dto = new PatientRequestByTemperatureAndDateDto(temperature, date);
         return findPatientsWithHighFever.execute(dto).stream()
                 .map(healthRecord -> new HighFeverDto(healthRecord.getPatient().getId(), healthRecord.getTemperature()))
@@ -67,8 +71,13 @@ public class PatientApiController {
     }
 
     @GetMapping("/api/patients")
-    public ResponseEntity<List<PatientDto>> getAllPatients() {
-        List<PatientDto> patients = findAllPatients.execute();
+    public ResponseEntity<List<PatientDto>> getAllPatients(@RequestParam(required = false) Integer older) {
+        List<PatientDto> patients;
+        if (older != null) {
+            patients = findAllPatientsOlderThan.execute(older);
+        } else {
+            patients = findAllPatients.execute();
+        }
         return ResponseEntity.ok(patients);
     }
 
