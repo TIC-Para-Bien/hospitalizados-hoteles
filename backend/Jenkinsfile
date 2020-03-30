@@ -5,6 +5,9 @@
 // Initialize global config
 cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_EMAIL_TARGETS])
 
+// Disable commit message validation
+cfg.commitValidation.enabled = false
+
 /**
 * Execute step command reading environment variables from the docker-compose  ".env.dist" file 
 * 
