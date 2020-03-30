@@ -19,7 +19,9 @@ pipeline {
                 docker { image 'maven:3.6.3-jdk-11-slim' }
             }
             steps {
-                sh "mvn clean compile"
+                dir ('backend') {
+                    sh "mvn clean compile"
+                }
             }
         }
     }
@@ -35,7 +37,6 @@ pipeline {
         ansiColor('xterm')
         buildDiscarder(logRotator(artifactNumToKeepStr: '20',artifactDaysToKeepStr: '30'))
         disableConcurrentBuilds()
-        skipDefaultCheckout()
-        timeout(time: 1, unit: 'DAYS')
+        timeout(time: 30, unit: 'MINUTES')
     }
 }
