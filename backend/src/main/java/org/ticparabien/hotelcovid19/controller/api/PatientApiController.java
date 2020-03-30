@@ -67,7 +67,7 @@ public class PatientApiController {
     }
 
     @GetMapping("/api/patients")
-    public ResponseEntity<List<PatientDto>> getAllPatients() {
+    public ResponseEntity<List<PatientDto>> getAllPatients(@RequestParam(required = false) Integer older) {
         List<PatientDto> patients = findAllPatients.execute();
         return ResponseEntity.ok(patients);
     }
