@@ -23,7 +23,7 @@ public class CheckInPatient {
 
     public void execute(Integer patientId, Integer roomId) {
         // TODO Check max room capacity not exceeded
-        Room room = roomRepository.findById(roomId)
+        Room room = roomRepository.findByIdWithPatients(roomId)
                 .orElseThrow(() -> new RoomNotFound("Room with ID " + roomId + " not found."));
 
         if (room.getMaxCapacity() <= room.getPatients().size()) {
