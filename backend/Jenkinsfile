@@ -66,6 +66,17 @@ pipeline {
                 doStepCommandWithEnv("mvn package spring-boot:repackage -DskipTests")
             }
         }
+        stage("Docker Publish") {
+            when { branch "feature/review-pipeline" }
+            steps {
+                docker.withRegistry("https://registry.hub.docker.com", 'hotelcovid-docker-credentials') {
+                    sh """
+                    docker-compose build
+                    docker-compose push
+                    """
+                }
+            }
+        }
     }
 
     post {
