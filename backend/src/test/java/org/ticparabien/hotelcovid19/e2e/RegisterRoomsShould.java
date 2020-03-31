@@ -1,6 +1,7 @@
 package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -92,6 +93,46 @@ class RegisterRoomsShould {
                 .andExpect(jsonPath("$.info", is(roomInfo)))
                 .andExpect(jsonPath("$.maxCapacity", is(roomCapacity)))
                 .andExpect(jsonPath("$.patients", hasSize(0)));
+    }
+
+    @Test
+    void registering_patient_should_check_max_room_capacity_is_not_reached() throws Exception {
+        Integer patientId = registerPatient();
+
+        RoomDto roomDto = RoomDto.builder()
+                .name("Single Capacity Room")
+                .info("Single Capacity Room Info")
+                .maxCapacity(1)
+                .build();
+        String body = objectMapper.writeValueAsString(roomDto);
+        String roomResourceUrl = mvc.perform(post(ROOMS_BASE_URI)
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andReturn()
+                .getResponse()
+                .getHeader(HttpHeaders.LOCATION);
+
+        String roomId = roomResourceUrl.substring(roomResourceUrl.lastIndexOf('/') + 1);
+
+        // CheckIn patient
+        mvc.perform(post(PATIENTS_BASE_URI + '/' + patientId + "/room/" + roomId)
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        //Registering a new patient will give a different identifier
+        patientId = registerPatient();
+
+        mvc.perform(post(PATIENTS_BASE_URI + '/' + patientId + "/room/" + roomId)
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
+
     }
 
     private Integer registerPatient() {
