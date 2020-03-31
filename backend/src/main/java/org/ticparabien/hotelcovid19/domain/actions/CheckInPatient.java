@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.Room;
 import org.ticparabien.hotelcovid19.domain.exception.PatientNotFound;
+import org.ticparabien.hotelcovid19.domain.exception.RoomMaxCapacityReached;
 import org.ticparabien.hotelcovid19.domain.exception.RoomNotFound;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 import org.ticparabien.hotelcovid19.domain.repositories.RoomRepository;
@@ -24,6 +25,11 @@ public class CheckInPatient {
         // TODO Check max room capacity not exceeded
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RoomNotFound("Room with ID " + roomId + " not found."));
+
+        if (room.getMaxCapacity() <= room.getPatients().size()) {
+            throw new RoomMaxCapacityReached("Room with ID " + roomId + " reached maximum capacity.");
+        }
+
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new PatientNotFound("Patient with ID " + patientId + " not found."));
         patient.setRoom(room); // Notice this does a patient check out from its current room automatically
