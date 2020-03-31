@@ -67,13 +67,15 @@ pipeline {
             }
         }
         stage("Docker Publish") {
-            when { branch "feature/review-pipeline" }
+            when { branch "develop" }
             steps {
-                docker.withRegistry("https://registry.hub.docker.com", 'hotelcovid-docker-credentials') {
-                    sh """
-                    docker-compose build
-                    docker-compose push
-                    """
+                script {
+                    docker.withRegistry("https://registry.hub.docker.com", 'hotelcovid-docker-credentials') {
+                        sh """
+                        docker-compose build
+                        docker-compose push
+                        """
+                    }
                 }
             }
         }
