@@ -19,9 +19,6 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "HASHED_PASSWORD", nullable = false)
-    private String hashedPassword;
-
     @Column(name = "PERSONAL_ID", nullable = false)
     private String personalId;
 
@@ -36,10 +33,14 @@ public class Patient {
 
     @ToString.Exclude
     @OrderBy(value = "createdOn DESC")
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE)
     private List<HealthRecord> healthRecords;
 
     @JoinColumn(name = "ROOM_ID")
     @ManyToOne
     private Room room;
+
+    @JoinColumn(name = "CREDENTIAL_ID")
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    private Credential credential;
 }

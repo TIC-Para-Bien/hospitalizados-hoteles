@@ -2,6 +2,7 @@ package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +13,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.ticparabien.hotelcovid19.controller.Routes;
-import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
+import org.ticparabien.hotelcovid19.domain.Credential;
 import org.ticparabien.hotelcovid19.domain.Patient;
+import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
 import java.text.SimpleDateFormat;
@@ -42,9 +44,14 @@ class RegisterHealthValuesShould {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @BeforeEach
+    void beforeEach() {
+        patientRepository.deleteAll();
+    }
+
     @Test
     void registering_high_fever_should_inform_doctors() throws Exception {
-        Patient patientWithFever = addPatient();
+        Patient patientWithFever = addPatient(1);
         Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
@@ -66,7 +73,7 @@ class RegisterHealthValuesShould {
 
     @Test
     void registering_health_record_and_retrieving_it_should_return_all_symptoms() throws Exception {
-        Patient patientWithFever = addPatient();
+        Patient patientWithFever = addPatient(1);
         Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
@@ -113,15 +120,18 @@ class RegisterHealthValuesShould {
         return objectMapper.writeValueAsString(dto);
     }
 
-    private Patient addPatient() {
-        Patient patient = Patient.builder()
+    private Patient addPatient(int id) {
+        Credential credential = Credential.builder()
+                .username("user" + id)
                 .hashedPassword("hashedPassword")
-                .name("pablo")
-                .personalId("484849384")
-                .phone("697839848")
-                .age(20)
                 .build();
-
+        Patient patient = Patient.builder()
+                .name("pablo")
+                .personalId("personalId" + id)
+                .phone("phone" + id)
+                .age(20)
+                .credential(credential)
+                .build();
         return patientRepository.saveAndFlush(patient);
     }
 }

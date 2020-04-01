@@ -1,6 +1,7 @@
 package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientRequestDto;
+import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,10 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RegisterPatientShould {
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private MockMvc mvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @BeforeEach
+    void beforeEach() {
+        patientRepository.deleteAll();
+    }
 
     @Test
     void registering_patient_should_allow_employee_to_get_password_and_hand_it_to_patient_and_to_get_patient_info() throws Exception {
