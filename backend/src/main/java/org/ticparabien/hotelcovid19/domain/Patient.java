@@ -1,26 +1,20 @@
 package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @Entity
 @Table(name = "patient")
-public class Patient {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "HASHED_PASSWORD", nullable = false)
-    private String hashedPassword;
+public class Patient extends User {
 
     @Column(name = "PERSONAL_ID", nullable = false)
     private String personalId;
@@ -36,7 +30,7 @@ public class Patient {
 
     @ToString.Exclude
     @OrderBy(value = "createdOn DESC")
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE)
     private List<HealthRecord> healthRecords;
 
     @JoinColumn(name = "ROOM_ID")

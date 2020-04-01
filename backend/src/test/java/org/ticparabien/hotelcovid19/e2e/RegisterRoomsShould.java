@@ -1,6 +1,7 @@
 package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,17 +27,22 @@ class RegisterRoomsShould {
 
     private static final String ROOMS_BASE_URI = "/api/rooms";
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private MockMvc mvc;
 
     @Autowired
     private PatientRepository patientRepository;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @BeforeEach
+    void beforeEach() {
+        patientRepository.deleteAll();
+    }
 
     @Test
     void creating_rooms_should_allow_checking_in_and_out_patients_in_rooms() throws Exception {
-        Integer patientId = registerPatient();
+        Integer patientId = registerPatient(1);
 
         // Create room
         String roomName = "Room 122";
@@ -96,7 +102,7 @@ class RegisterRoomsShould {
 
     @Test
     void registering_patient_should_check_max_room_capacity_is_not_reached() throws Exception {
-        Integer patientId = registerPatient();
+        Integer patientId = registerPatient(2);
 
         RoomDto roomDto = RoomDto.builder()
                 .name("Single Capacity Room")
@@ -124,7 +130,7 @@ class RegisterRoomsShould {
                 .andExpect(status().isNoContent());
 
         //Registering a new patient will give a different identifier
-        patientId = registerPatient();
+        patientId = registerPatient(3);
 
         mvc.perform(post(PATIENTS_BASE_URI + '/' + patientId + "/room/" + roomId)
                 .content(body)
@@ -134,12 +140,13 @@ class RegisterRoomsShould {
 
     }
 
-    private Integer registerPatient() {
+    private Integer registerPatient(Integer diff) {
         Patient patient = Patient.builder()
+                .username("user" + diff)
                 .hashedPassword("hashedPassword")
-                .personalId("personalId")
+                .personalId("personalId" + diff)
                 .name("Herminia")
-                .phone("phone")
+                .phone("phone" + diff)
                 .age(68)
                 .build();
         return patientRepository.save(patient).getId();

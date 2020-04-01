@@ -138,41 +138,42 @@ class ListPatientsShould {
 
     private void createTestDataToOldPeople(Date date1, Date date2, Date date3,
                                            Integer age1, Integer age2, Integer age3, Integer age4) {
-        Patient patient = createPatient(age1);
+        Patient patient = createPatient("user1", "personalId1", age1, "phone1");
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date3);
 
-        patient = createPatient(age2);
+        patient = createPatient("user2", "personalId2", age2, "phone2");
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date3);
         createHealthRecord(patient, date2);
 
-        patient = createPatient(age3);
+        patient = createPatient("user3", "personalId3", age3, "phone3");
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date3);
         createHealthRecord(patient, date1);
 
-        patient = createPatient(age4);
+        patient = createPatient("user4", "personalId4", age4, "phone4");
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date3);
     }
 
     private Patient createTestData(Date date1, Date date2, Date date3) {
-       Patient patient = createPatient(20);
+       Patient patient = createPatient("user1", "personalId", 20, "phone1");
        createHealthRecord(patient, date1);
        createHealthRecord(patient, date2);
        createHealthRecord(patient, date3);
        return patient;
     }
 
-    private Patient createPatient(Integer age){
+    private Patient createPatient(String username, String personalId, Integer age, String phone){
         Patient patient = Patient.builder()
+                .username(username)
                 .hashedPassword("hashedPassword")
-                .personalId("personalId")
+                .personalId(personalId)
                 .name("Herminia")
-                .phone("phone")
+                .phone(phone)
                 .age(age)
                 .build();
         return patientRepository.save(patient);

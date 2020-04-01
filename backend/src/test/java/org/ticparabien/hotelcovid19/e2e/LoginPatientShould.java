@@ -48,6 +48,8 @@ class LoginPatientShould {
 
     @PostConstruct
     void init() {
+
+        patientRepository.deleteAll();
         registerPatient(phone, password);
     }
 
@@ -106,6 +108,7 @@ class LoginPatientShould {
 
     private void registerPatient(String phone, String password) {
         Patient patient = Patient.builder()
+                .username(phone)
                 .name("Angelines")
                 .personalId("personalId")
                 .age(88)

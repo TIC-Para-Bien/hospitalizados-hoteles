@@ -2,6 +2,8 @@ package org.ticparabien.hotelcovid19.e2e;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,9 +44,14 @@ class RegisterHealthValuesShould {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @BeforeEach
+    void beforeEach() {
+        patientRepository.deleteAll();
+    }
+
     @Test
     void registering_high_fever_should_inform_doctors() throws Exception {
-        Patient patientWithFever = addPatient();
+        Patient patientWithFever = addPatient(1);
         Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
@@ -66,7 +73,7 @@ class RegisterHealthValuesShould {
 
     @Test
     void registering_health_record_and_retrieving_it_should_return_all_symptoms() throws Exception {
-        Patient patientWithFever = addPatient();
+        Patient patientWithFever = addPatient(1);
         Float expectedTemperature = 38f;
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
@@ -113,12 +120,13 @@ class RegisterHealthValuesShould {
         return objectMapper.writeValueAsString(dto);
     }
 
-    private Patient addPatient() {
+    private Patient addPatient(int diff) {
         Patient patient = Patient.builder()
+                .username("user" + diff)
                 .hashedPassword("hashedPassword")
                 .name("pablo")
-                .personalId("484849384")
-                .phone("697839848")
+                .personalId("personalId" + diff)
+                .phone("phone" + diff)
                 .age(20)
                 .build();
 

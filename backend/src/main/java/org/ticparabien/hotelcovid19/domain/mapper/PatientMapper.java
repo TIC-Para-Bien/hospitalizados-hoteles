@@ -16,6 +16,7 @@ public class PatientMapper {
 
     public Patient mapToEntity(RegisterPatientRequestDto dto) {
         return Patient.builder()
+                .username(dto.getPhone())
                 .personalId(dto.getPersonalId())
                 .name(dto.getName())
                 .phone(dto.getPhone())
