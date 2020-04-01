@@ -48,11 +48,11 @@ pipeline {
                 doStepCommandWithEnv("mvn verify -P integration-test -Dtest=BlakenTest -DfailIfNoTests=false")
             }
         }
-    //    stage('Acceptance Tests') {
-    //        steps {
-    //            doStepCommandWithEnv("mvn verify -P acceptance-test -Dtest=BlakenTest -DfailIfNoTests=false")
-    //        }
-    //    }
+        stage('Acceptance Tests') {
+            steps {
+                doStepCommandWithEnv("mvn verify -P acceptance-test -Dtest=BlakenTest -DfailIfNoTests=false")
+            }
+        }
     //    stage('Sonar') {
     //       withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-tpb') {
     //            sh 'mvn sonar:sonar'

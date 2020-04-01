@@ -13,4 +13,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
     @Query("FROM Room r WHERE r.name = :name")
     Optional<Room> findByName(@Param("name") String name);
+
+    @Query("FROM Room r LEFT JOIN FETCH r.patients WHERE r.id = :id")
+    Optional<Room> findByIdWithPatients(@Param("id") Integer id);
 }
