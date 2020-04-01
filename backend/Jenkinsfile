@@ -30,7 +30,10 @@ def doStepCommandWithEnv(String command) {
  *
  * @param nextReleaseNumber String Release number to be used as tag
  */
-def buildAndPublishDockerImages(String nextReleaseNumber="beta") {
+def buildAndPublishDockerImages(String nextReleaseNumber="") {
+    if (nextReleaseNumber == "") {
+        nextReleaseNumber = sh (script: "kd get-next-release-number .", returnStdout: true).trim().substring(1)
+    }
     dir ('backend') {
         sh """
         cat .env.dist |grep -v "^tag" > .env
@@ -91,6 +94,13 @@ pipeline {
             when { branch "develop" }
             steps {
                 buildAndPublishDockerImages("beta")
+            }
+        }
+        stage ('Make release') {
+            when { branch 'release/new' }
+            steps {
+                publishDockerImage()
+                jplMakeRelease(cfg, true)
             }
         }
     }
