@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.ticparabien.hotelcovid19.domain.Credential;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.dto.RoomDto;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
@@ -140,14 +141,17 @@ class RegisterRoomsShould {
 
     }
 
-    private Integer registerPatient(Integer diff) {
-        Patient patient = Patient.builder()
-                .username("user" + diff)
+    private Integer registerPatient(Integer id) {
+        Credential credential = Credential.builder()
+                .username("user" + id)
                 .hashedPassword("hashedPassword")
-                .personalId("personalId" + diff)
+                .build();
+        Patient patient = Patient.builder()
+                .personalId("personalId" + id)
                 .name("Herminia")
-                .phone("phone" + diff)
+                .phone("phone" + id)
                 .age(68)
+                .credential(credential)
                 .build();
         return patientRepository.save(patient).getId();
     }

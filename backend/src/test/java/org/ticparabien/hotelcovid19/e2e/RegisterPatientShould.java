@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientRequestDto;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 

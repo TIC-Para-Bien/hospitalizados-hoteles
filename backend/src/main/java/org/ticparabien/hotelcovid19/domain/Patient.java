@@ -1,20 +1,23 @@
 package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @ToString
 @Entity
 @Table(name = "patient")
-public class Patient extends User {
+public class Patient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "PERSONAL_ID", nullable = false)
     private String personalId;
@@ -36,4 +39,8 @@ public class Patient extends User {
     @JoinColumn(name = "ROOM_ID")
     @ManyToOne
     private Room room;
+
+    @JoinColumn(name = "CREDENTIAL_ID")
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    private Credential credential;
 }

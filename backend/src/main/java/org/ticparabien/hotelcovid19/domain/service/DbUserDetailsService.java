@@ -8,29 +8,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.ticparabien.hotelcovid19.domain.Patient;
-import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.ticparabien.hotelcovid19.domain.Credential;
+import org.ticparabien.hotelcovid19.domain.repositories.CredentialRepository;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class DbUserDetailsService implements UserDetailsService {
 
     // TODO Missing functional requirements from mobile field hospitals to model User repositories properly
 
-    private final PatientRepository patientRepository;
+    private final CredentialRepository credentialRepository;
 
     @Override
+    @Transactional()
     public UserDetails loadUserByUsername(String username) {
-        Patient patient = patientRepository.findByPhone(username)
+        Credential credential = credentialRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Patient with username: " + username + " was not found."));
 
-        return new User(patient.getPersonalId(), patient.getHashedPassword(), getAuthority());
+        return new User(credential.getUsername(), credential.getHashedPassword(), getAuthority(credential));
     }
 
-    private List<GrantedAuthority> getAuthority() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    private List<GrantedAuthority> getAuthority(Credential credential) {
+        return credential.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
     }
 }

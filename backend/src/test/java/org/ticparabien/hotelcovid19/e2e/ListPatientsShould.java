@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.ticparabien.hotelcovid19.domain.Credential;
 import org.ticparabien.hotelcovid19.domain.HealthRecord;
 import org.ticparabien.hotelcovid19.domain.Patient;
 import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
@@ -138,43 +139,46 @@ class ListPatientsShould {
 
     private void createTestDataToOldPeople(Date date1, Date date2, Date date3,
                                            Integer age1, Integer age2, Integer age3, Integer age4) {
-        Patient patient = createPatient("user1", "personalId1", age1, "phone1");
+        Patient patient = createPatient(1, age1);
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date3);
 
-        patient = createPatient("user2", "personalId2", age2, "phone2");
+        patient = createPatient(2, age2);
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date3);
         createHealthRecord(patient, date2);
 
-        patient = createPatient("user3", "personalId3", age3, "phone3");
+        patient = createPatient(3, age3);
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date3);
         createHealthRecord(patient, date1);
 
-        patient = createPatient("user4", "personalId4", age4, "phone4");
+        patient = createPatient(4, age4);
         createHealthRecord(patient, date2);
         createHealthRecord(patient, date1);
         createHealthRecord(patient, date3);
     }
 
     private Patient createTestData(Date date1, Date date2, Date date3) {
-       Patient patient = createPatient("user1", "personalId", 20, "phone1");
+       Patient patient = createPatient(1, 20);
        createHealthRecord(patient, date1);
        createHealthRecord(patient, date2);
        createHealthRecord(patient, date3);
        return patient;
     }
 
-    private Patient createPatient(String username, String personalId, Integer age, String phone){
-        Patient patient = Patient.builder()
-                .username(username)
+    private Patient createPatient(int id, Integer age){
+        Credential credential = Credential.builder()
+                .username("user" + id)
                 .hashedPassword("hashedPassword")
-                .personalId(personalId)
+                .build();
+        Patient patient = Patient.builder()
+                .personalId("personalId" + id)
                 .name("Herminia")
-                .phone(phone)
+                .phone("phone" + id)
                 .age(age)
+                .credential(credential)
                 .build();
         return patientRepository.save(patient);
     }

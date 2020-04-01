@@ -1,20 +1,22 @@
 package org.ticparabien.hotelcovid19.domain;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @ToString
 @Entity
 @Table(name = "personnel")
-public class Personnel extends User {
+public class Personnel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "PERSONAL_ID", nullable = false, unique = true)
     private String personnelId;
@@ -24,4 +26,7 @@ public class Personnel extends User {
 
     @Column(name = "PHONE", nullable = false, unique = true)
     private String phone;
+
+    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
+    private Credential credentials;
 }

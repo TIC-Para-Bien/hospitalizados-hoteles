@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <patient ID="1" USERNAME="username" HASHED_PASSWORD="hashedPassword" PERSONAL_ID="personalId" PHONE="phone" NAME="name" AGE="20" />
+    <credentials ID="1" HASHED_PASSWORD="hashedPassword"/>
+    <patient ID="1" PERSONAL_ID="personalId" PHONE="phone" NAME="name" AGE="20" CREDENTIAL_ID="1"/>
 </dataset>

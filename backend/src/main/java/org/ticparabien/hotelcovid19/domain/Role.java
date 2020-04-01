@@ -1,15 +1,14 @@
 package org.ticparabien.hotelcovid19.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "roles")
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -24,5 +23,5 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    private List<Credential> credentials;
 }

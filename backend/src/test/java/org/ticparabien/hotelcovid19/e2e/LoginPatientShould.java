@@ -8,11 +8,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.ticparabien.hotelcovid19.domain.Credential;
 import org.ticparabien.hotelcovid19.domain.Patient;
+import org.ticparabien.hotelcovid19.domain.Role;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
+import org.ticparabien.hotelcovid19.domain.repositories.RoleRepository;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
+
+import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasLength;
@@ -42,6 +47,9 @@ class LoginPatientShould {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -107,13 +115,20 @@ class LoginPatientShould {
     }
 
     private void registerPatient(String phone, String password) {
-        Patient patient = Patient.builder()
+        Role role = Role.builder()
+                .name("ROLE")
+                .build();
+        Credential credential = Credential.builder()
                 .username(phone)
+                .hashedPassword(passwordEncoder.encode(password))
+                .roles(Collections.singleton(role))
+                .build();
+        Patient patient = Patient.builder()
                 .name("Angelines")
                 .personalId("personalId")
                 .age(88)
                 .phone(phone)
-                .hashedPassword(passwordEncoder.encode(password))
+                .credential(credential)
                 .build();
         patientRepository.saveAndFlush(patient);
     }
