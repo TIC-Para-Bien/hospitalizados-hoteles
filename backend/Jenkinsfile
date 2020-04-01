@@ -9,10 +9,10 @@ cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_E
 cfg.commitValidation.enabled = false
 
 /**
-* Execute step command reading environment variables from the docker-compose  ".env.dist" file 
-* 
-* @param command String Command to be executed within 'backend' directory
-*/
+ * Execute step command reading environment variables from the docker-compose  ".env.dist" file
+ *
+ * @param command String Command to be executed within 'backend' directory
+ */
 def doStepCommandWithEnv(String command) {
     dir ('backend') {
         docker.image('maven:3.6.3-jdk-11-slim').inside {
@@ -24,6 +24,30 @@ def doStepCommandWithEnv(String command) {
 
     }
 }
+
+/**
+ * Build and publish docker images
+ *
+ * @param nextReleaseNumber String Release number to be used as tag
+ */
+def buildAndPublishDockerImages(String nextReleaseNumber="") {
+    if (nextReleaseNumber == "") {
+        nextReleaseNumber = sh (script: "kd get-next-release-number .", returnStdout: true).trim().substring(1)
+    }
+    dir ('backend') {
+        sh """
+        cat .env.dist |grep -v "^tag" > .env
+        export tag_app="${nextReleaseNumber}"
+        export tag_desktop="${nextReleaseNumber}"
+        docker-compose build
+        """
+    }
+    docker.withRegistry("https://registry.hub.docker.com", 'hotelcovid-docker-credentials') {
+        docker.image("ticparabien/hospitalizados-hoteles-app:${nextReleaseNumber}").push()
+        docker.image("ticparabien/hospitalizados-hoteles-desktop:${nextReleaseNumber}").push()
+    }
+}
+
 pipeline {
     agent { label 'docker' }
 
@@ -64,6 +88,19 @@ pipeline {
         stage('Package JAR') {
             steps {
                 doStepCommandWithEnv("mvn package spring-boot:repackage -DskipTests")
+            }
+        }
+        stage("Docker Publish") {
+            when { branch "develop" }
+            steps {
+                buildAndPublishDockerImages("beta")
+            }
+        }
+        stage ('Make release') {
+            when { branch 'release/new' }
+            steps {
+                publishDockerImage()
+                jplMakeRelease(cfg, true)
             }
         }
     }
