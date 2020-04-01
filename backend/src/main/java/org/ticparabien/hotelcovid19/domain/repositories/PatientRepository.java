@@ -15,6 +15,9 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     @Query("FROM Patient p WHERE p.personalId = :personalId")
     Optional<Patient> findByPersonalId(@Param("personalId") String personalId);
 
+    @Query("FROM Patient p WHERE p.phone = :phone")
+    Optional<Patient> findByPhone(@Param("phone") String phone);
+
     @Query("FROM Patient p WHERE p.age > :age")
     Collection<Patient> findAllOlderThan(@Param("age") Integer age);
 }
