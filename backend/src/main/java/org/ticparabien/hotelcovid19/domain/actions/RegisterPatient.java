@@ -1,5 +1,7 @@
 package org.ticparabien.hotelcovid19.domain.actions;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +22,11 @@ import java.util.Collections;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class RegisterPatient {
 
-    private static final int DEFAULT_PASSWORD_LENGTH = 8;
+    @Value("${security.password.default-length}")
+    private int defaultPasswordLength;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -36,21 +40,11 @@ public class RegisterPatient {
 
     private final PatientMapper patientMapper;
 
-    public RegisterPatient(PasswordEncoder passwordEncoder, PasswordGenerator passwordGenerator, CredentialRepository credentialRepository,
-                           RoleRepository roleRepository, PatientRepository patientRepository, PatientMapper patientMapper) {
-        this.passwordEncoder = passwordEncoder;
-        this.passwordGenerator = passwordGenerator;
-        this.credentialRepository = credentialRepository;
-        this.roleRepository = roleRepository;
-        this.patientRepository = patientRepository;
-        this.patientMapper = patientMapper;
-    }
-
     public RegisterPatientResponseDto execute(RegisterPatientRequestDto dto) {
         // TODO Make length configurable through the DTO at request level or by application property
         Role role = roleRepository.findByName(Roles.PATIENT.toString())
                 .orElseThrow(() -> new RoleNotFound("Role PATIENT not found."));
-        String generatedPassword = passwordGenerator.generate(DEFAULT_PASSWORD_LENGTH);
+        String generatedPassword = passwordGenerator.generate(defaultPasswordLength);
         String hashedPassword = passwordEncoder.encode(generatedPassword);
         Credential credential = Credential.builder()
                 .username(dto.getPhone())

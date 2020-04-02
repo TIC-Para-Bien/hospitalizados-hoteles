@@ -27,6 +27,6 @@ public class Personnel {
     @Column(name = "PHONE", nullable = false, unique = true)
     private String phone;
 
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
-    private Credential credentials;
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Credential credential;
 }
