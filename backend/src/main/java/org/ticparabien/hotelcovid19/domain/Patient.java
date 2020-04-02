@@ -41,6 +41,6 @@ public class Patient {
     private Room room;
 
     @JoinColumn(name = "CREDENTIAL_ID")
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Credential credential;
 }

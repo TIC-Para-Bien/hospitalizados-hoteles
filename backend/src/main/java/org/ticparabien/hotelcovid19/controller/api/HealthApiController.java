@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.ticparabien.hotelcovid19.controller.Routes;
-import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.actions.AddHealthRegister;
+import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 
 @RestController
@@ -20,6 +21,7 @@ public class HealthApiController {
     @Autowired
     private AddHealthRegister addHealthRegister;
 
+    @RolesAllowed({"PATIENT", "PERSONNEL", "ADMIN"})
     @PostMapping(Routes.PatientHealthRecord)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> addHealthRegister(@RequestBody HealthRecordDto dto){

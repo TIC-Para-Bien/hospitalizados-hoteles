@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.ticparabien.hotelcovid19.domain.dto.RoomDto;
 import org.ticparabien.hotelcovid19.domain.service.RoomService;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 
 @RestController
@@ -17,6 +18,7 @@ public class RoomApiController {
     @Autowired
     private RoomService roomService;
 
+    @RolesAllowed("PERSONNEL")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> addNewRoom(@RequestBody RoomDto dto){
@@ -30,6 +32,7 @@ public class RoomApiController {
         return ResponseEntity.created(location).build();
     }
 
+    @RolesAllowed("PERSONNEL")
     @GetMapping("/{id}")
     public ResponseEntity<RoomDto> getRoomById(@PathVariable("id") Integer id) {
         return roomService.getRoomById(id)
@@ -37,6 +40,7 @@ public class RoomApiController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @RolesAllowed("PERSONNEL")
     @GetMapping
     public ResponseEntity<RoomDto> getRoomByName(@RequestParam(value = "name") String name) {
         return roomService.getRoomByName(name)
@@ -44,12 +48,14 @@ public class RoomApiController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @RolesAllowed("PERSONNEL")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateRoom(@PathVariable("id") Integer id, @RequestBody RoomDto dto){
         roomService.updateRoom(id, dto);
     }
 
+    @RolesAllowed("PERSONNEL")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRoom(@PathVariable("id") Integer id){

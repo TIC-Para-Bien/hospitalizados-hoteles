@@ -9,12 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.ticparabien.hotelcovid19.controller.Routes;
 import org.ticparabien.hotelcovid19.domain.Credential;
 import org.ticparabien.hotelcovid19.domain.Patient;
+import org.ticparabien.hotelcovid19.domain.Roles;
 import org.ticparabien.hotelcovid19.domain.dto.HealthRecordDto;
 import org.ticparabien.hotelcovid19.domain.repositories.PatientRepository;
 
@@ -25,13 +25,14 @@ import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.ticparabien.hotelcovid19.util.TestUtils.withMockUser;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@WithMockUser("patient")
 class RegisterHealthValuesShould {
 
     @Autowired
@@ -56,6 +57,7 @@ class RegisterHealthValuesShould {
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
         mvc.perform(post(Routes.PatientHealthRecord)
+                .with(user(withMockUser(Roles.PATIENT)))
                 .content(sentJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -65,6 +67,7 @@ class RegisterHealthValuesShould {
         Date date = Date.from(Instant.now().minus(1, ChronoUnit.HOURS));
         String requestParams = String.format("?temperature=%s&date=%s", 37.7f, sdf.format(date));
         mvc.perform(get(Routes.HighFeverPatients + requestParams)
+                .with(user(withMockUser(Roles.PERSONNEL)))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.[0].patientId", is(patientWithFever.getId())))
@@ -78,6 +81,7 @@ class RegisterHealthValuesShould {
         String sentJson = healthRecordJson(patientWithFever, expectedTemperature);
 
         mvc.perform(post(Routes.PatientHealthRecord)
+                .with(user(withMockUser(Roles.PATIENT)))
                 .content(sentJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -86,6 +90,7 @@ class RegisterHealthValuesShould {
                 .andReturn().getResponse().getHeader(HttpHeaders.LOCATION);
 
         mvc.perform(get("/api/patients/" + patientWithFever.getId())
+                .with(user(withMockUser(Roles.PERSONNEL)))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.healthRecords[0].temperature", notNullValue()))

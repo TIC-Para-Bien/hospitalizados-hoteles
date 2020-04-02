@@ -14,6 +14,7 @@ import org.ticparabien.hotelcovid19.domain.dto.PatientRequestByTemperatureAndDat
 import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientRequestDto;
 import org.ticparabien.hotelcovid19.domain.dto.RegisterPatientResponseDto;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class PatientApiController {
     private CheckOutPatient checkOutPatient;
 
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @GetMapping(Routes.HighFeverPatients)
     @ResponseStatus(HttpStatus.OK)
     public List<HighFeverDto> getHighFeverPatients(@RequestParam(defaultValue = FEVER_LIMIT) float temperature,
@@ -58,6 +60,7 @@ public class PatientApiController {
                 .collect(Collectors.toList());
     }
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @PostMapping("/api/patients")
     public ResponseEntity<RegisterPatientResponseDto> registerPatient(@RequestBody RegisterPatientRequestDto dto) {
         RegisterPatientResponseDto responseDto = registerPatient.execute(dto);
@@ -70,6 +73,7 @@ public class PatientApiController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @GetMapping("/api/patients")
     public ResponseEntity<List<PatientDto>> getAllPatients(@RequestParam(required = false) Integer older) {
         List<PatientDto> patients;
@@ -81,6 +85,7 @@ public class PatientApiController {
         return ResponseEntity.ok(patients);
     }
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @GetMapping("/api/patients/{id}")
     public ResponseEntity<PatientDto> getPatientById(@PathVariable("id") Integer id) {
         return findPatientById.execute(id)
@@ -88,12 +93,14 @@ public class PatientApiController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @PostMapping("/api/patients/{id}/room/{roomId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void roomCheckIn(@PathVariable("id") Integer patientId, @PathVariable("roomId") Integer roomId) {
         checkInPatient.execute(patientId, roomId);
     }
 
+    @RolesAllowed({"PERSONNEL", "ADMIN"})
     @DeleteMapping("/api/patients/{id}/room")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void roomCheckOut(@PathVariable("id") Integer patientId) {
