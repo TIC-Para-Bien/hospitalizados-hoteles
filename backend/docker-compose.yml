@@ -20,7 +20,7 @@ services:
       - ./platform/desktop/duing-start.sh:/root/duing-start.sh:ro
       - m2-cache:/root/.m2:${VOLUME_CACHING}
     ports:
-      - 3389:3389
+      - ${DUING_PORT}
     networks:
       - internal
     command: /root/duing-start.sh
@@ -36,10 +36,9 @@ services:
       DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
     volumes:
       - ./:/workspace:${VOLUME_CACHING}
-      - m2-cache:/home/ubuntu/.m2:${VOLUME_CACHING}
     ports:
-      - 8080:8080
-      - 5005:5005
+      - ${APP_PORT}
+      - ${DEBUG_PORT}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.entrypoints=web"
