@@ -63,3 +63,5 @@ backend/.env
 # Excluded files
 !/backend/platform/desktop/intellij_assets.tar.gz
 
+# Maven packages
+/backend/\?
