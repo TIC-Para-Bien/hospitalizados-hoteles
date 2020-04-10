@@ -49,6 +49,10 @@ Set of actions for the backend
 
 Usage:
 
+$ devcontrol backend prepare # Pull and build docker-compose images
+
+[...]
+
 $ devcontrol backend build # Execute "mvn clean compile"
 
 [...]

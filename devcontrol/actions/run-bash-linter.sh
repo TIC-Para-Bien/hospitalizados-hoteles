@@ -23,8 +23,10 @@ function run-bash-linter() {
     helpMessage=$(cat <<EOF
 Run shellckheck test over the following scripts:
 
-* devcontrol/actions/*.sh
-* devcontrol/global/*.sh
+* backend/platform/app/start.sh
+* backend/platform/desktop/*.sh
+* bin/*.sh
+* devcontrol/*/*.sh
 EOF
 )
 
@@ -38,10 +40,10 @@ EOF
             ;;
         exec)
             exitCode=0
-            for file in devcontrol/actions/*.sh devcontrol/global/*.sh; do
+            for file in backend/platform/app/start.sh backend/platform/desktop/*.sh bin/*.sh devcontrol/*/*.sh; do
                 echo -n "Running shellcheck bash linter over ${file}..."
                 failed=0
-                docker run --network none -i --rm --workdir /workspace -v "$(pwd)":/workspace koalaman/shellcheck-alpine shellcheck -x "${file}" || failed=1
+                docker run --network none -i --rm --workdir /workspace -v "$(pwd)":/workspace koalaman/shellcheck-alpine shellcheck -x "${file}" -e "SC2012" || failed=1
                 if [ ${failed} -eq 0 ]; then
                     echo "[OK]"
                 else

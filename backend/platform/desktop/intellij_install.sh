@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Installing IntelliJ IDEA..."
 
 # We need root to install
-[ $(id -u) != "0" ] && exec sudo "$0" "$@"
+[ "$(id -u)" != "0" ] && exec sudo "$0" "$@"
 
 # IntelliJ Edition
 ed="C"
@@ -25,18 +25,18 @@ DEST=/tmp/${FILE}
 echo "Downloading idea-I${ed}-${VERSION} to ${DEST}..."
 
 # Download binarydf -h
-wget -cO ${DEST} ${URL} --read-timeout=5 --tries=0
+wget -cO "${DEST}" "${URL}" --read-timeout=5 --tries=0
 
 echo "Download complete!"
 
 # Set directory name
 DIR="/opt/idea-I${ed}-${VERSION}"
-``
+
 echo "Installing to ${DIR}"
 
 # Untar file
-if mkdir ${DIR}; then
-    tar -xzf ${DEST} -C ${DIR} --strip-components=1
+if mkdir "${DIR}"; then
+    tar -xzf "${DEST}" -C ${DIR} --strip-components=1
 fi
 
 # Grab executable folder
