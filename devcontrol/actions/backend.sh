@@ -90,9 +90,13 @@ EOF
                 showHelpMessage "${FUNCNAME[0]}" "$helpMessage"
                 exit 1
             fi
-            cd backend
+            cd "${rootdir}/backend"
             backendActions=${param[1]}
             case ${backendActions} in
+                "prepare")
+                    docker-compose pull
+                    docker-compose build
+                    ;;
                 "build")                executeUsingDockerBackend "mvn clean compile" ;;
                 "unit-tests")           executeUsingDockerBackend "mvn -Dmaven-home=\"$(pwd)\" test" ;;
                 "integration-tests")    executeUsingDockerBackend "mvn -Dmaven-home=\"$(pwd)\" verify -P integration-test -Dtest=BlakenTest -DfailIfNoTests=false" ;;
