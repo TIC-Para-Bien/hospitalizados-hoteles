@@ -38,6 +38,7 @@ pipeline {
         stage ('Initialize') {
             steps  {
                 jplStart(cfg)
+                sh "rm -f backend/.env; cp backend/.env_test.dist backend/.env"
             }
         }
         stage('Build') {
