@@ -19,7 +19,7 @@ def buildAndPublishDockerImages(String nextReleaseNumber="") {
     }
     dir ('backend') {
         sh """
-        cat .env.dist |grep -v "^tag" > .env
+        cat .env_test.dist |grep -v "^tag" > .env
         export tag_app="${nextReleaseNumber}"
         export tag_desktop="${nextReleaseNumber}"
         docker-compose build
@@ -38,7 +38,8 @@ pipeline {
         stage ('Initialize') {
             steps  {
                 jplStart(cfg)
-                sh "rm -f backend/.env; cp backend/.env_test.dist backend/.env"
+                sh "cat backend/.env_test.dist > backend/.env"
+                sh "devcontrol backend prepare"
             }
         }
         stage('Build') {
