@@ -19,11 +19,7 @@ function executeUsingDockerBackend() {
         echo >&2 "[ERROR] executeUsingDockerBackend: Empty argument"
     fi
     cd "${rootdir}/backend"
-    docker-compose run --rm \
-        -v "$(pwd)":"$(pwd)":delegated \
-        -u "$(id -u):$(id -g)" \
-        --entrypoint="" \
-        app bash -c "$1"
+    docker-compose run --rm -u "$(id -u):$(id -g)" --entrypoint="" app bash -c "$1"
 }
 
 # @description Set of actions for the backend
