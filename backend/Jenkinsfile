@@ -9,23 +9,6 @@ cfg = jplConfig('hotel-covid-backend', 'springboot', '', [email: env.CI_NOTIFY_E
 cfg.commitValidation.enabled = false
 
 /**
- * Execute step command reading environment variables from the docker-compose  ".env.dist" file
- *
- * @param command String Command to be executed within 'backend' directory
- */
-def doStepCommandWithEnv(String command) {
-    dir ('backend') {
-        docker.image('maven:3.6.3-jdk-11-slim').inside {
-            sh """
-            for envvar in \$(cat .env.dist|grep -v "^#"); do export \$envvar; done
-            ${command}
-            """
-        }
-
-    }
-}
-
-/**
  * Build and publish docker images
  *
  * @param nextReleaseNumber String Release number to be used as tag
@@ -42,7 +25,7 @@ def buildAndPublishDockerImages(String nextReleaseNumber="") {
         docker-compose build
         """
     }
-    docker.withRegistry("https://registry.hub.docker.com", 'hotelcovid-docker-credentials') {
+    docker.withRegistry("", 'hotelcovid-docker-credentials') {
         docker.image("ticparabien/hospitalizados-hoteles-app:${nextReleaseNumber}").push()
         docker.image("ticparabien/hospitalizados-hoteles-desktop:${nextReleaseNumber}").push()
     }
@@ -59,22 +42,22 @@ pipeline {
         }
         stage('Build') {
             steps {
-                doStepCommandWithEnv("mvn clean compile")
+                sh "devcontrol backend build"
             }
         }
         stage('Unit tests') {
             steps {
-                doStepCommandWithEnv("mvn test")
+                sh "devcontrol backend unit-tests"
             }
         }
         stage('Integration tests') {
             steps {
-                doStepCommandWithEnv("mvn verify -P integration-test -Dtest=BlakenTest -DfailIfNoTests=false")
+                sh "devcontrol backend integration-tests"
             }
         }
         stage('Acceptance Tests') {
             steps {
-                doStepCommandWithEnv("mvn verify -P acceptance-test -Dtest=BlakenTest -DfailIfNoTests=false")
+                sh "devcontrol backend acceptance-tests"
             }
         }
     //    stage('Sonar') {
@@ -87,7 +70,7 @@ pipeline {
     //    }
         stage('Package JAR') {
             steps {
-                doStepCommandWithEnv("mvn package spring-boot:repackage -DskipTests")
+                sh "devcontrol backend package"
             }
         }
         stage("Docker Publish") {
@@ -99,7 +82,7 @@ pipeline {
         stage ('Make release') {
             when { branch 'release/new' }
             steps {
-                publishDockerImage()
+                buildAndPublishDockerImages()
                 jplMakeRelease(cfg, true)
             }
         }
